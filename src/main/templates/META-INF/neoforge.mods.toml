@@ -12,7 +12,7 @@ logoFile="icon.png"
 credits="masa"
 authors="TexTrue, CagayakeGirls"
 description='''
-MiniHUD unofficial NeoForge port. Configurable "mini-F3" info lines, and various overlay renderers
+Tweakeroo unofficial NeoForge port. Adds a bunch of configurable client-side tweaks
 '''
 
 [[mods]]
