@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.function.Supplier;
 
+import net.neoforged.neoforge.entity.PartEntity;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.block.Block;
@@ -271,6 +272,26 @@ public class FakeWorld extends World
     }
 
     @Override
+    public void setDayTimeFraction(float f) {
+
+    }
+
+    @Override
+    public float getDayTimeFraction() {
+        return 0;
+    }
+
+    @Override
+    public float getDayTimePerTick() {
+        return 0;
+    }
+
+    @Override
+    public void setDayTimePerTick(float f) {
+
+    }
+
+    @Override
     public QueryableTickScheduler<Block> getBlockTickScheduler()
     {
         return null;
@@ -348,7 +369,7 @@ public class FakeWorld extends World
     }
 
     @Override
-    public Collection<EnderDragonPart> getEnderDragonParts()
+    public Collection<PartEntity<?>> getEnderDragonParts()
     {
         return List.of();
     }

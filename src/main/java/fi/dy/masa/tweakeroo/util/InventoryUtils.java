@@ -1441,7 +1441,7 @@ public class InventoryUtils
                 if (isHotbarSlot(slotNumber))
                 {
                     inventory.selectedSlot = slotNumber - 36;
-                    mc.getNetworkHandler().sendPacket(new UpdateSelectedSlotC2SPacket(inventory.selectedSlot));
+                    mc.getNetworkHandler().send(new UpdateSelectedSlotC2SPacket(inventory.selectedSlot));
                 }
                 else
                 {
@@ -1485,7 +1485,7 @@ public class InventoryUtils
             if (isHotbarSlot(slotNumber))
             {
                 inventory.selectedSlot = slotNumber - 36;
-                mc.getNetworkHandler().sendPacket(new UpdateSelectedSlotC2SPacket(inventory.selectedSlot));
+                mc.getNetworkHandler().send(new UpdateSelectedSlotC2SPacket(inventory.selectedSlot));
             }
             else
             {
@@ -1497,7 +1497,7 @@ public class InventoryUtils
                     if (hotbarSlot != selectedSlot)
                     {
                         inventory.selectedSlot = hotbarSlot;
-                        mc.getNetworkHandler().sendPacket(new UpdateSelectedSlotC2SPacket(inventory.selectedSlot));
+                        mc.getNetworkHandler().send(new UpdateSelectedSlotC2SPacket(inventory.selectedSlot));
                     }
 
                     mc.interactionManager.clickSlot(container.syncId, slotNumber, hotbarSlot, SlotActionType.SWAP, mc.player);
