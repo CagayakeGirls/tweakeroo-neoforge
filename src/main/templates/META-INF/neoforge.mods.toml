@@ -1,0 +1,51 @@
+modLoader="javafml"
+loaderVersion="${fml_version_range}"
+license="LGPLv3"
+issueTrackerURL="${mod_link}/issues"
+
+[[mods]]
+modId="${mod_id}"
+version="${mod_version}"
+displayName="${mod_name}"
+displayURL="${mod_link}"
+logoFile="icon.png"
+credits="masa"
+authors="TexTrue, CagayakeGirls"
+description='''
+Tweakeroo unofficial NeoForge port. Adds a bunch of configurable client-side tweaks
+'''
+
+[[mods]]
+modId="tweakeroo"
+version="${mod_version}"
+displayName="Tweakeroo Stub"
+logoFile="assets/tweakeroo/icon.png"
+credits="masa"
+authors="TexTrue, CagayakeGirls"
+description='''
+Tweakeroo Stub.
+'''
+
+[[mixins]]
+config="mixins.tweakeroo.json"
+
+[[dependencies."${mod_id}"]]
+modId="neoforge"
+type="required"
+versionRange="${neoforge_version_range}"
+ordering="NONE"
+side="BOTH"
+
+[[dependencies."${mod_id}"]]
+modId="minecraft"
+type="required"
+versionRange="${minecraft_version_range}"
+ordering="NONE"
+side="BOTH"
+
+[[dependencies."${mod_id}"]]
+modId="mafglib"
+type="required"
+versionRange="${malilib_version_range}"
+ordering="NONE"
+side="BOTH"
