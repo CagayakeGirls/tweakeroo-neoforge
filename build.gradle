@@ -24,8 +24,8 @@ dependencies {
 
 base {
 	group = project.group + "." + project.mod_id
-	archivesName = project.mod_file_name + '-' + project.minecraft_version_out
-	version = project.mod_version
+	archivesName = project.mod_file_name
+	version = "${project.mod_version}+mc${project.minecraft_version_out}"
 
 	if (version.endsWith('-dev')) {
 		version += "." + new Date().format('yyyyMMdd.HHmmss')
