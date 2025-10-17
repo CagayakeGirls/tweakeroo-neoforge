@@ -4,8 +4,8 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.PistonBlock;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
+//import net.fabricmc.api.EnvType;
+//import net.fabricmc.api.Environment;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -19,7 +19,7 @@ import fi.dy.masa.tweakeroo.tweaks.RenderTweaks;
 @Mixin(PistonBlock.class)
 public class MixinPistonBlock
 {
-    @Environment(EnvType.CLIENT)
+//    @Environment(EnvType.CLIENT)
     @Inject(method = "onSyncedBlockEvent", at = @At("HEAD"))
     private void onSyncedBlockEventInject(BlockState state, World world, BlockPos pos, int type, int data, CallbackInfoReturnable<Boolean> ci)
     {
