@@ -93,12 +93,6 @@ public class RenderTweaks
         return dynamicRegistryManager;
     }
 
-    public static void resetWorld(int loadDistance, World world)
-    {
-        reloadRegistryManager(world);
-        resetWorld(loadDistance);
-    }
-
     public static void resetWorld(int loadDistance)
     {
         fakeWorld = new FakeWorld(dynamicRegistryManager, loadDistance);

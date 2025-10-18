@@ -133,7 +133,8 @@ public abstract class MixinClientPlayNetworkHandler extends ClientCommonNetworkH
     ))
     private void tweakeroo_onPlayerRespawnInject(PlayerRespawnS2CPacket packet, CallbackInfo ci)
     {
-        RenderTweaks.resetWorld(this.simulationDistance, this.world);
+        RenderTweaks.reloadRegistryManager(this.world);
+        RenderTweaks.resetWorld(this.simulationDistance);
     }
 
     /**
@@ -145,7 +146,8 @@ public abstract class MixinClientPlayNetworkHandler extends ClientCommonNetworkH
     ))
     private void tweakeroo_onGameJoinInject(GameJoinS2CPacket packet, CallbackInfo ci)
     {
-        RenderTweaks.resetWorld(this.simulationDistance, this.world);
+        RenderTweaks.reloadRegistryManager(this.world);
+        RenderTweaks.resetWorld(this.simulationDistance);
     }
 
     /**
