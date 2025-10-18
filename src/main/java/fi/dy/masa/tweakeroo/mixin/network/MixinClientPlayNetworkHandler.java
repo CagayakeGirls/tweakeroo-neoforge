@@ -127,20 +127,26 @@ public abstract class MixinClientPlayNetworkHandler extends ClientCommonNetworkH
     /**
      * Copied From Tweak Fork by Andrew54757
      */
-    @Inject(method = "onPlayerRespawn", at = @At(value = "NEW",
-                                                 target = "net/minecraft/client/world/ClientWorld"))
+    @Inject(method = "onPlayerRespawn", at = @At(value = "INVOKE",
+            target = "Lnet/minecraft/client/MinecraftClient;joinWorld(Lnet/minecraft/client/world/ClientWorld;Lnet/minecraft/client/gui/screen/DownloadingTerrainScreen$WorldEntryReason;)V",
+            shift = At.Shift.AFTER
+    ))
     private void tweakeroo_onPlayerRespawnInject(PlayerRespawnS2CPacket packet, CallbackInfo ci)
     {
+        RenderTweaks.reloadRegistryManager(this.world);
         RenderTweaks.resetWorld(this.simulationDistance);
     }
 
     /**
      * Copied From Tweak Fork by Andrew54757
      */
-    @Inject(method = "onGameJoin", at = @At(value = "NEW",
-                                            target = "net/minecraft/client/world/ClientWorld"))
+    @Inject(method = "onGameJoin", at = @At(value = "INVOKE",
+            target = "Lnet/minecraft/client/MinecraftClient;joinWorld(Lnet/minecraft/client/world/ClientWorld;Lnet/minecraft/client/gui/screen/DownloadingTerrainScreen$WorldEntryReason;)V",
+            shift = At.Shift.AFTER
+    ))
     private void tweakeroo_onGameJoinInject(GameJoinS2CPacket packet, CallbackInfo ci)
     {
+        RenderTweaks.reloadRegistryManager(this.world);
         RenderTweaks.resetWorld(this.simulationDistance);
     }
 

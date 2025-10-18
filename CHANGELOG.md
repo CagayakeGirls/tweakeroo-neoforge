@@ -1,2 +1,2 @@
 ## Changelog
-- fix description
+- fix dynamicRegistryManager NPE issue (by @AweiMC)
