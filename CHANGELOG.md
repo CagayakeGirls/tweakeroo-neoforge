@@ -1,2 +1,2 @@
 ## Changelog
-- update neoforge version
+- fix dynamicRegistryManager NPE issue (by @AweiMC)
