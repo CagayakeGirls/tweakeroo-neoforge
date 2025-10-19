@@ -97,6 +97,11 @@ public class RenderTweaks
         fakeWorld = new FakeWorld(dynamicRegistryManager, loadDistance);
     }
 
+    public static void reloadRegistryManager(World world)
+    {
+        dynamicRegistryManager = world.getRegistryManager().toImmutable();
+    }
+
     public static FakeWorld getFakeWorld()
     {
         return fakeWorld;
