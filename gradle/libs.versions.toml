@@ -1,0 +1,20 @@
+[versions]
+range-fml = "[4,)"
+range-game = "[1.21.9,)"
+range-neoforge = "[21.9,)"
+range-mafglib = "[0.4.6,)"
+
+version-env = "client"
+version-type = "release"
+
+platformId-curseforge = "915857"
+platformId-modrinth = "yke6wdGF"
+
+yarn-patch = "1.21+build.4"
+
+architectury-loom = "1.13-SNAPSHOT"
+modpublisher = "2.+"
+
+[plugins]
+architectury-loom = { id = "dev.architectury.loom", version.ref = "architectury-loom" }
+modpublisher = { id = "com.hypherionmc.modutils.modpublisher", version.ref = "modpublisher" }
