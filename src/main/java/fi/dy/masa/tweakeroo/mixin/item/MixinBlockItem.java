@@ -5,14 +5,14 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import fi.dy.masa.tweakeroo.config.Configs;
+import fi.dy.masa.tweakeroo.tweaks.PlacementHandler;
+import fi.dy.masa.tweakeroo.tweaks.PlacementHandler.UseContext;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemPlacementContext;
-import fi.dy.masa.tweakeroo.config.Configs;
-import fi.dy.masa.tweakeroo.tweaks.PlacementHandler;
-import fi.dy.masa.tweakeroo.tweaks.PlacementHandler.UseContext;
 
 @Mixin(BlockItem.class)
 public abstract class MixinBlockItem extends Item

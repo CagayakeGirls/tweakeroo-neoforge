@@ -1,13 +1,13 @@
 package fi.dy.masa.tweakeroo.mixin.fog;
 
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.render.fog.FogRenderer;
-import net.minecraft.client.world.ClientWorld;
-import net.minecraft.util.math.MathHelper;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.*;
 
 import fi.dy.masa.tweakeroo.config.Configs;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.render.fog.FogRenderer;
+import net.minecraft.client.world.ClientWorld;
+import net.minecraft.util.math.MathHelper;
 
 @Mixin(FogRenderer.class)
 public class MixinFogRenderer

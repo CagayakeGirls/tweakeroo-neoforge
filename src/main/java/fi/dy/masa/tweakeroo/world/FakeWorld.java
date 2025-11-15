@@ -4,9 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.function.Supplier;
-
-import net.minecraft.world.WorldProperties;
-import net.neoforged.neoforge.entity.PartEntity;
+import javax.annotation.Nonnull;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.block.Block;
@@ -41,6 +39,7 @@ import net.minecraft.util.profiler.Profilers;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.MutableWorldProperties;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldProperties;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.border.WorldBorder;
 import net.minecraft.world.chunk.Chunk;
@@ -104,43 +103,43 @@ public class FakeWorld extends World
     }
 
     @Override
-    public FakeChunkManager getChunkManager()
+    public @Nonnull FakeChunkManager getChunkManager()
     {
         return this.chunkManager;
     }
 
     @Override
-    public void syncWorldEvent(@Nullable Entity source, int eventId, BlockPos pos, int data)
+    public void syncWorldEvent(@Nullable Entity source, int eventId, @Nonnull BlockPos pos, int data)
     {
         // TODO Auto-generated method stub
     }
 
     @Override
-    public void emitGameEvent(RegistryEntry<GameEvent> event, Vec3d emitterPos, Emitter emitter)
+    public void emitGameEvent(@Nonnull RegistryEntry<GameEvent> event, @Nonnull Vec3d emitterPos, @Nonnull Emitter emitter)
     {
         // TODO Auto-generated method stub
     }
 
     @Override
-    public WorldChunk getWorldChunk(BlockPos pos)
+    public @Nonnull WorldChunk getWorldChunk(BlockPos pos)
     {
         return this.getChunk(pos.getX() >> 4, pos.getZ() >> 4);
     }
 
     @Override
-    public FakeChunk getChunk(int chunkX, int chunkZ)
+    public @Nonnull FakeChunk getChunk(int chunkX, int chunkZ)
     {
         return this.chunkManager.getChunk(chunkX, chunkZ);
     }
 
     @Override
-    public Chunk getChunk(int chunkX, int chunkZ, ChunkStatus status, boolean required)
+    public Chunk getChunk(int chunkX, int chunkZ, @Nonnull ChunkStatus status, boolean required)
     {
         return this.getChunk(chunkX, chunkZ);
     }
 
     @Override
-    public boolean setBlockState(BlockPos pos, BlockState newState, int flags)
+    public boolean setBlockState(BlockPos pos, @Nonnull BlockState newState, int flags)
     {
         if (pos.getY() < this.getBottomY() || pos.getY() >= this.getTopYInclusive())
         {
@@ -247,25 +246,25 @@ public class FakeWorld extends World
     }
 
     @Override
-    public String asString()
+    public @Nonnull String asString()
     {
         return "Chunks[FAKE] W: " + this.getChunkManager().getDebugString();
     }
 
 	@Override
-	public void setSpawnPoint(WorldProperties.SpawnPoint spawnPoint)
+	public void setSpawnPoint(@Nonnull WorldProperties.SpawnPoint spawnPoint)
 	{
 		// NO-OP
 	}
 
     @Override
-    public WorldProperties.SpawnPoint getSpawnPoint()
+    public @Nonnull WorldProperties.SpawnPoint getSpawnPoint()
     {
         return new WorldProperties.SpawnPoint(new GlobalPos(World.OVERWORLD, BlockPos.ORIGIN), 0.0f, 0.0f);
     }
 
     @Override
-    public DynamicRegistryManager getRegistryManager()
+    public @Nonnull DynamicRegistryManager getRegistryManager()
     {
         if (this.registryManager == null)
         {
@@ -276,13 +275,13 @@ public class FakeWorld extends World
     }
 
     @Override
-    public BrewingRecipeRegistry getBrewingRecipeRegistry()
+    public @Nonnull BrewingRecipeRegistry getBrewingRecipeRegistry()
     {
         return null;
     }
 
     @Override
-    public FuelRegistry getFuelRegistry()
+    public @Nonnull FuelRegistry getFuelRegistry()
     {
         return null;
     }
@@ -308,26 +307,25 @@ public class FakeWorld extends World
     }
 
     @Override
-    public QueryableTickScheduler<Block> getBlockTickScheduler()
+    public @Nonnull QueryableTickScheduler<Block> getBlockTickScheduler()
     {
         return null;
     }
 
     @Override
-    public QueryableTickScheduler<Fluid> getFluidTickScheduler()
+    public @Nonnull QueryableTickScheduler<Fluid> getFluidTickScheduler()
     {
         return null;
     }
 
     @Override
-    public List<? extends PlayerEntity> getPlayers()
+    public @Nonnull List<? extends PlayerEntity> getPlayers()
     {
-        // TODO Auto-generated method stub
-        return null;
+        return List.of();
     }
 
     @Override
-    public RegistryEntry<Biome> getGeneratorStoredBiome(int var1, int var2, int var3)
+    public @Nonnull RegistryEntry<Biome> getGeneratorStoredBiome(int var1, int var2, int var3)
     {
         // TODO Auto-generated method stub
         return null;
@@ -340,42 +338,47 @@ public class FakeWorld extends World
     }
 
     @Override
-    public FeatureSet getEnabledFeatures()
+    public @Nonnull FeatureSet getEnabledFeatures()
     {
         // TODO Auto-generated method stub
-        return null;
+        return FeatureSet.empty();
     }
 
     @Override
-    public float getBrightness(Direction var1, boolean var2)
+    public float getBrightness(@Nonnull Direction var1, boolean var2)
     {
         // TODO Auto-generated method stub
         return 0;
     }
 
     @Override
-    public void updateListeners(BlockPos var1, BlockState var2, BlockState var3, int var4)
+    public void updateListeners(@Nonnull BlockPos var1, @Nonnull BlockState var2, @Nonnull BlockState var3, int var4)
     {
         // TODO Auto-generated method stub
     }
 
     @Override
-    public void playSound(@Nullable Entity source, double x, double y, double z, RegistryEntry<SoundEvent> sound, SoundCategory category, float volume, float pitch, long seed)
+    public void playSound(@Nullable Entity source, double x, double y, double z, @Nonnull RegistryEntry<SoundEvent> sound, @Nonnull SoundCategory category, float volume, float pitch, long seed)
     {
         // TODO Auto-generated method stub
     }
 
     @Override
-    public void playSoundFromEntity(@Nullable Entity source, Entity entity, RegistryEntry<SoundEvent> sound, SoundCategory category, float volume, float pitch, long seed)
+    public void playSoundFromEntity(@Nullable Entity source, @Nonnull Entity entity, @Nonnull RegistryEntry<SoundEvent> sound, @Nonnull SoundCategory category, float volume, float pitch, long seed)
     {
         // TODO Auto-generated method stub
     }
 
 	@Override
-	public void createExplosion(@Nullable Entity entity, @Nullable DamageSource damageSource, @Nullable ExplosionBehavior behavior, double x, double y, double z, float power, boolean createFire, ExplosionSourceType explosionSourceType, ParticleEffect smallParticle, ParticleEffect largeParticle, Pool<BlockParticleEffect> blockParticles, RegistryEntry<SoundEvent> soundEvent)
+	public void createExplosion(@Nullable Entity entity, @Nullable DamageSource damageSource,
+	                    @Nullable ExplosionBehavior behavior,
+	                    double x, double y, double z, float power, boolean createFire,
+	                    @Nonnull ExplosionSourceType explosionSourceType,
+	                    @Nonnull ParticleEffect smallParticle, @Nonnull ParticleEffect largeParticle,
+	                    @Nonnull Pool<BlockParticleEffect> blockParticles,
+	                    @Nonnull RegistryEntry<SoundEvent> soundEvent)
 	{
 		// TODO Auto-generated method stub
-
 	}
 
     @Override
@@ -386,52 +389,52 @@ public class FakeWorld extends World
     }
 
     @Override
-    public Collection<PartEntity<?>> getEnderDragonParts()
+    public @Nonnull Collection<PartEntity<?>> getEnderDragonParts()
     {
         return List.of();
     }
 
     @Override
-    public TickManager getTickManager()
+    public @Nonnull TickManager getTickManager()
     {
         return null;
     }
 
     @Override
-    public @Nullable MapState getMapState(MapIdComponent id)
+    public @Nullable MapState getMapState(@Nonnull MapIdComponent id)
     {
         return null;
     }
 
     @Override
-    public void setBlockBreakingInfo(int var1, BlockPos var2, int var3)
+    public void setBlockBreakingInfo(int var1, @Nonnull BlockPos var2, int var3)
     {
         // TODO Auto-generated method stub
     }
 
     @Override
-    public Scoreboard getScoreboard()
-    {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public RecipeManager getRecipeManager()
+    public @Nonnull Scoreboard getScoreboard()
     {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    protected EntityLookup<Entity> getEntityLookup()
+    public @Nonnull RecipeManager getRecipeManager()
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    protected @Nonnull EntityLookup<Entity> getEntityLookup()
     {
         // TODO Auto-generated method stub
         return null;
     }
 
 	@Override
-	public WorldBorder getWorldBorder()
+	public @Nonnull WorldBorder getWorldBorder()
 	{
 		return WorldBorder.Properties.DEFAULT.toWorldBorder();
 	}

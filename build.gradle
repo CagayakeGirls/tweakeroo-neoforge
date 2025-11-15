@@ -33,7 +33,9 @@ base {
 }
 
 loom {
-//	def commonVmArgs = ['-Dmixin.debug.export=true', '-Dmixin.debug.countInjections=true']
+    accessWidenerPath = file("src/main/resources/tweakeroo.accesswidener")
+
+//    def commonVmArgs = ['-Dmixin.debug.export=true', '-Dmixin.debug.countInjections=true']
 //	// [FEATURE] MIXIN_AUDITOR
 //	runs {
 //		def auditVmArgs = [*commonVmArgs, '-DmixinAuditor.audit=true']
@@ -43,8 +45,6 @@ loom {
 //			ideConfigGenerated false
 //		}
 //	}
-
-    accessWidenerPath = file("src/main/resources/tweakeroo.accesswidener")
 }
 
 var generateModMetadata = tasks.register("generateModMetadata", ProcessResources) {

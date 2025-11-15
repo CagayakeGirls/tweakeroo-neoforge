@@ -3,14 +3,11 @@ package fi.dy.masa.tweakeroo.event;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import javax.annotation.Nullable;
-
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.registry.DynamicRegistryManager;
-
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import fi.dy.masa.malilib.interfaces.IWorldLoadListener;
 import fi.dy.masa.malilib.util.FileUtils;
 import fi.dy.masa.malilib.util.JsonUtils;
@@ -24,6 +21,7 @@ import fi.dy.masa.tweakeroo.data.CameraPresetManager;
 import fi.dy.masa.tweakeroo.data.DataManager;
 import fi.dy.masa.tweakeroo.data.ServerDataSyncer;
 import fi.dy.masa.tweakeroo.tweaks.RenderTweaks;
+import fi.dy.masa.tweakeroo.util.MiscUtils;
 
 public class WorldLoadListener implements IWorldLoadListener
 {
@@ -67,7 +65,7 @@ public class WorldLoadListener implements IWorldLoadListener
             if (FeatureToggle.TWEAK_GAMMA_OVERRIDE.getBooleanValue())
             {
                 FeatureToggle.TWEAK_GAMMA_OVERRIDE.setBooleanValue(false);
-                FeatureToggle.TWEAK_GAMMA_OVERRIDE.setBooleanValue(true);
+	            MiscUtils.toggleGammaOverrideWithMessage();
             }
 
             // Prevents option value de-sync

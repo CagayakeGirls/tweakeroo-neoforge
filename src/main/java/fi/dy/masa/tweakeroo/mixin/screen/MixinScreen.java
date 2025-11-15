@@ -1,12 +1,12 @@
 package fi.dy.masa.tweakeroo.mixin.screen;
 
-import net.minecraft.client.gui.screen.Screen;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
 import fi.dy.masa.tweakeroo.config.Configs;
+import net.minecraft.client.gui.screen.Screen;
 
 @Mixin(value = Screen.class)
 public abstract class MixinScreen

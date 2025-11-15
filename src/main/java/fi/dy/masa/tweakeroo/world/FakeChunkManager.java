@@ -2,8 +2,8 @@ package fi.dy.masa.tweakeroo.world;
 
 import java.util.concurrent.atomic.AtomicReferenceArray;
 import java.util.function.BooleanSupplier;
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.chunk.ChunkManager;
 import net.minecraft.world.chunk.ChunkStatus;
@@ -29,7 +29,7 @@ public class FakeChunkManager extends ChunkManager
     }
 
     @Override
-    public FakeWorld getWorld()
+    public @Nonnull FakeWorld getWorld()
     {
         return this.world;
     }
@@ -46,7 +46,7 @@ public class FakeChunkManager extends ChunkManager
         return this.chunks.get(chunkX, chunkZ) != null;
     }
 
-    public String getDebugString()
+    public @Nonnull String getDebugString()
     {
         return "Fake Chunk Cache: " + this.getLoadedChunkCount();
     }
@@ -57,7 +57,7 @@ public class FakeChunkManager extends ChunkManager
     }
 
     @Override
-    public WorldChunk getChunk(int chunkX, int chunkZ, ChunkStatus status, boolean fallbackToEmpty)
+    public WorldChunk getChunk(int chunkX, int chunkZ, @Nonnull ChunkStatus status, boolean fallbackToEmpty)
     {
         FakeChunk chunk = this.getChunk(chunkX, chunkZ);
         return chunk == null && fallbackToEmpty ? this.blankChunk : chunk;
@@ -82,7 +82,7 @@ public class FakeChunkManager extends ChunkManager
     }
 
     @Override
-    public LightingProvider getLightingProvider()
+    public @Nonnull LightingProvider getLightingProvider()
     {
         return null;
     }
@@ -201,7 +201,7 @@ public class FakeChunkManager extends ChunkManager
     }
 
     @Override
-    public void tick(BooleanSupplier var1, boolean var2)
+    public void tick(@Nonnull BooleanSupplier var1, boolean var2)
     {
         // NOOP
 

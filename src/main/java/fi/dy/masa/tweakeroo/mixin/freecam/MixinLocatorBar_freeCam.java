@@ -1,8 +1,5 @@
 package fi.dy.masa.tweakeroo.mixin.freecam;
 
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.gui.hud.bar.LocatorBar;
-import net.minecraft.client.render.RenderTickCounter;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -10,6 +7,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import fi.dy.masa.tweakeroo.config.Configs;
 import fi.dy.masa.tweakeroo.config.FeatureToggle;
+import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.gui.hud.bar.LocatorBar;
+import net.minecraft.client.render.RenderTickCounter;
 
 @Mixin(value = LocatorBar.class, priority = 999)
 public class MixinLocatorBar_freeCam

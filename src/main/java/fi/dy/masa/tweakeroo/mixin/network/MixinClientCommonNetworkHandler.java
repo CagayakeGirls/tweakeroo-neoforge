@@ -1,13 +1,13 @@
 package fi.dy.masa.tweakeroo.mixin.network;
 
-import net.minecraft.client.network.ClientCommonNetworkHandler;
-import net.minecraft.network.packet.s2c.common.CustomPayloadS2CPacket;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import fi.dy.masa.tweakeroo.data.DataManager;
+import net.minecraft.client.network.ClientCommonNetworkHandler;
+import net.minecraft.network.packet.s2c.common.CustomPayloadS2CPacket;
 
 @Mixin(ClientCommonNetworkHandler.class)
 public class MixinClientCommonNetworkHandler

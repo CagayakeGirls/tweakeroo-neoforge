@@ -29,7 +29,7 @@ public abstract class MixinClientWorld extends World
         super(properties, registryRef, registryManager, dimension, isClient, debugWorld, seed, maxChainedNeighborUpdates);
     }
 
-    @Inject(method = "tickEntity", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "tickEntity(Lnet/minecraft/entity/Entity;)V", at = @At("HEAD"), cancellable = true)
     private void disableClientEntityTicking(Entity entity, CallbackInfo ci)
     {
         if (Configs.Disable.DISABLE_CLIENT_ENTITY_UPDATES.getBooleanValue() &&

@@ -1,18 +1,5 @@
 package fi.dy.masa.tweakeroo.mixin.network;
 
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.network.ClientPlayerEntity;
-import net.minecraft.client.network.ClientPlayerInteractionManager;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.BlockItem;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
-import net.minecraft.util.hit.BlockHitResult;
-import net.minecraft.util.hit.EntityHitResult;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -27,6 +14,19 @@ import fi.dy.masa.tweakeroo.tweaks.MiscTweaks;
 import fi.dy.masa.tweakeroo.tweaks.PlacementTweaks;
 import fi.dy.masa.tweakeroo.util.CameraUtils;
 import fi.dy.masa.tweakeroo.util.InventoryUtils;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.network.ClientPlayerEntity;
+import net.minecraft.client.network.ClientPlayerInteractionManager;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.BlockItem;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.Hand;
+import net.minecraft.util.hit.BlockHitResult;
+import net.minecraft.util.hit.EntityHitResult;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
 
 @Mixin(ClientPlayerInteractionManager.class)
 public abstract class MixinClientPlayerInteractionManager
@@ -60,11 +60,7 @@ public abstract class MixinClientPlayerInteractionManager
         }
     }
 
-    @Inject(method = "interactEntity(" +
-                     "Lnet/minecraft/entity/player/PlayerEntity;" +
-                     "Lnet/minecraft/entity/Entity;" +
-                     "Lnet/minecraft/util/Hand;" +
-                     ")Lnet/minecraft/util/ActionResult;",
+    @Inject(method = "interactEntity(Lnet/minecraft/entity/player/PlayerEntity;Lnet/minecraft/entity/Entity;Lnet/minecraft/util/Hand;)Lnet/minecraft/util/ActionResult;",
             at = @At("HEAD"),
             cancellable = true)
     private void tweakeroo_onRightClickMouseOnEntityPre1(PlayerEntity player, Entity target, Hand hand, CallbackInfoReturnable<ActionResult> cir)
@@ -76,12 +72,7 @@ public abstract class MixinClientPlayerInteractionManager
         }
     }
 
-    @Inject(method = "interactEntityAtLocation(" +
-                     "Lnet/minecraft/entity/player/PlayerEntity;" +
-                     "Lnet/minecraft/entity/Entity;" +
-                     "Lnet/minecraft/util/hit/EntityHitResult;" +
-                     "Lnet/minecraft/util/Hand;" +
-                     ")Lnet/minecraft/util/ActionResult;",
+    @Inject(method = "interactEntityAtLocation(Lnet/minecraft/entity/player/PlayerEntity;Lnet/minecraft/entity/Entity;Lnet/minecraft/util/hit/EntityHitResult;Lnet/minecraft/util/Hand;)Lnet/minecraft/util/ActionResult;",
             at = @At("HEAD"),
             cancellable = true)
     private void tweakeroo_onRightClickMouseOnEntityPre2(PlayerEntity player, Entity target, EntityHitResult trace, Hand hand, CallbackInfoReturnable<ActionResult> cir)
@@ -145,8 +136,7 @@ public abstract class MixinClientPlayerInteractionManager
     // can't just inject into breakBlock's RETURN directly anymore since it's now synced by sendSequencedPacket
     @Inject(method = "attackBlock",
             at = @At(value = "INVOKE", shift = At.Shift.AFTER,
-                     target = "Lnet/minecraft/client/network/ClientPlayerInteractionManager;" +
-                              "sendSequencedPacket(Lnet/minecraft/client/world/ClientWorld;Lnet/minecraft/client/network/SequencedPacketCreator;)V"
+                     target = "Lnet/minecraft/client/network/ClientPlayerInteractionManager;sendSequencedPacket(Lnet/minecraft/client/world/ClientWorld;Lnet/minecraft/client/network/SequencedPacketCreator;)V"
             ))
     private void tweakeroo_handleBreakReplaceInAttack(BlockPos targetPos, Direction side, CallbackInfoReturnable<Boolean> cir)
     {
@@ -176,8 +166,7 @@ public abstract class MixinClientPlayerInteractionManager
 
     @Inject(method = "updateBlockBreakingProgress",
             at = @At(value = "INVOKE", shift = At.Shift.AFTER,
-                     target = "Lnet/minecraft/client/network/ClientPlayerInteractionManager;" +
-                              "sendSequencedPacket(Lnet/minecraft/client/world/ClientWorld;Lnet/minecraft/client/network/SequencedPacketCreator;)V"
+                     target = "Lnet/minecraft/client/network/ClientPlayerInteractionManager;sendSequencedPacket(Lnet/minecraft/client/world/ClientWorld;Lnet/minecraft/client/network/SequencedPacketCreator;)V"
             ))
     private void tweakeroo_handleBreakReplaceInUpdate(BlockPos targetPos, Direction side, CallbackInfoReturnable<Boolean> cir)
     {

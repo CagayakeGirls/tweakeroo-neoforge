@@ -3,8 +3,6 @@ package fi.dy.masa.tweakeroo.network;
 import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import io.netty.buffer.Unpooled;
-
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtSizeTracker;
 import net.minecraft.network.PacketByteBuf;
@@ -12,7 +10,7 @@ import net.minecraft.network.codec.PacketCodec;
 import net.minecraft.network.packet.CustomPayload;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
-
+import io.netty.buffer.Unpooled;
 import fi.dy.masa.malilib.network.IClientPayloadData;
 import fi.dy.masa.tweakeroo.Tweakeroo;
 
@@ -463,7 +461,7 @@ public class ServuxTweaksPacket implements IClientPayloadData
 
     public record Payload(ServuxTweaksPacket data) implements CustomPayload
     {
-        public static final Id<Payload> ID = new Id<>(ServuxTweaksHandler.CHANNEL_ID);
+        public static final CustomPayload.Id<Payload> ID = new CustomPayload.Id<>(ServuxTweaksHandler.CHANNEL_ID);
         public static final PacketCodec<PacketByteBuf, Payload> CODEC = CustomPayload.codecOf(Payload::write, Payload::new);
 
         public Payload(PacketByteBuf input)
@@ -477,7 +475,7 @@ public class ServuxTweaksPacket implements IClientPayloadData
         }
 
         @Override
-        public Id<? extends CustomPayload> getId()
+        public @Nonnull CustomPayload.Id<? extends CustomPayload> getId()
         {
             return ID;
         }

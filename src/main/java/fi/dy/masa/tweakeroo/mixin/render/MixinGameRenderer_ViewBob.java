@@ -4,9 +4,9 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
+import fi.dy.masa.tweakeroo.config.Configs;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.util.math.MatrixStack;
-import fi.dy.masa.tweakeroo.config.Configs;
 
 /**
  * Separated out for Iris compatibility by adjusting the Mixin Priority

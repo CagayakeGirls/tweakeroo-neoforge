@@ -1,5 +1,6 @@
 package fi.dy.masa.tweakeroo.world;
 
+import javax.annotation.Nonnull;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -26,7 +27,7 @@ public class FakeChunk extends WorldChunk
     }
 
     @Override
-    public BlockState getBlockState(BlockPos pos)
+    public @Nonnull BlockState getBlockState(BlockPos pos)
     {
         int x = pos.getX() & 0xF;
         int y = pos.getY();
@@ -50,7 +51,7 @@ public class FakeChunk extends WorldChunk
     }
 
     @Override
-    public BlockState setBlockState(BlockPos pos, BlockState state, int flags)
+    public BlockState setBlockState(@Nonnull BlockPos pos, @Nonnull BlockState state, int flags)
     {
         BlockState stateOld = this.getBlockState(pos);
         int y = pos.getY();

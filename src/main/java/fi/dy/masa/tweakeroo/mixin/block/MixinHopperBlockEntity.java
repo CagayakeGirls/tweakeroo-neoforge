@@ -2,9 +2,6 @@ package fi.dy.masa.tweakeroo.mixin.block;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
-
-import net.minecraft.block.entity.HopperBlockEntity;
-import net.minecraft.item.ItemStack;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -12,6 +9,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import fi.dy.masa.tweakeroo.config.Configs;
 import fi.dy.masa.tweakeroo.util.MiscUtils;
+import net.minecraft.block.entity.HopperBlockEntity;
+import net.minecraft.item.ItemStack;
 
 /**
  * <a href="https://github.com/kikugie/stackable-shulkers-fix">...</a> by KikuGie

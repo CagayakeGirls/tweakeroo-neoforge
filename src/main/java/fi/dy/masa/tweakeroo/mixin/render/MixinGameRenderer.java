@@ -1,7 +1,6 @@
 package fi.dy.masa.tweakeroo.mixin.render;
 
 import java.util.function.Predicate;
-
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.Camera;
 import net.minecraft.client.render.GameRenderer;
@@ -52,15 +51,9 @@ public abstract class MixinGameRenderer
         }
     }
 
-    @ModifyArg(method = "findCrosshairTarget",
+    @ModifyArg(method = "findCrosshairTarget(Lnet/minecraft/entity/Entity;DDF)Lnet/minecraft/util/hit/HitResult;",
                at = @At(value = "INVOKE",
-                        target = "Lnet/minecraft/entity/projectile/ProjectileUtil;raycast(" +
-                                 "Lnet/minecraft/entity/Entity;" +
-                                 "Lnet/minecraft/util/math/Vec3d;" +
-                                 "Lnet/minecraft/util/math/Vec3d;" +
-                                 "Lnet/minecraft/util/math/Box;" +
-                                 "Ljava/util/function/Predicate;D)" +
-                                 "Lnet/minecraft/util/hit/EntityHitResult;"))
+                        target = "Lnet/minecraft/entity/projectile/ProjectileUtil;raycast(Lnet/minecraft/entity/Entity;Lnet/minecraft/util/math/Vec3d;Lnet/minecraft/util/math/Vec3d;Lnet/minecraft/util/math/Box;Ljava/util/function/Predicate;D)Lnet/minecraft/util/hit/EntityHitResult;"))
     private Predicate<Entity> tweakeroo_overrideTargetedEntityCheck(Predicate<Entity> predicate)
     {
         if (Configs.Disable.DISABLE_DEAD_MOB_TARGETING.getBooleanValue())

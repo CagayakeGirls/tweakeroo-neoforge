@@ -1,11 +1,6 @@
 package fi.dy.masa.tweakeroo.mixin.freecam;
 
 import com.mojang.authlib.GameProfile;
-import net.minecraft.client.input.Input;
-import net.minecraft.client.network.AbstractClientPlayerEntity;
-import net.minecraft.client.network.ClientPlayerEntity;
-import net.minecraft.client.world.ClientWorld;
-import net.minecraft.util.Hand;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -18,6 +13,11 @@ import fi.dy.masa.tweakeroo.config.FeatureToggle;
 import fi.dy.masa.tweakeroo.util.CameraEntity;
 import fi.dy.masa.tweakeroo.util.CameraUtils;
 import fi.dy.masa.tweakeroo.util.DummyMovementInput;
+import net.minecraft.client.input.Input;
+import net.minecraft.client.network.AbstractClientPlayerEntity;
+import net.minecraft.client.network.ClientPlayerEntity;
+import net.minecraft.client.world.ClientWorld;
+import net.minecraft.util.Hand;
 
 @Mixin(value = ClientPlayerEntity.class, priority = 1005)
 public abstract class MixinClientPlayerEntity_freeCam extends AbstractClientPlayerEntity

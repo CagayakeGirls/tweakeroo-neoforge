@@ -5,11 +5,6 @@ import org.joml.Vector4f;
 import org.objectweb.asm.Opcodes;
 
 import com.mojang.blaze3d.buffers.GpuBufferSlice;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.render.*;
-import net.minecraft.client.util.ObjectAllocator;
-import net.minecraft.entity.Entity;
-import net.minecraft.util.math.MathHelper;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -20,6 +15,14 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import fi.dy.masa.tweakeroo.config.FeatureToggle;
 import fi.dy.masa.tweakeroo.util.CameraUtils;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.render.Camera;
+import net.minecraft.client.render.Frustum;
+import net.minecraft.client.render.RenderTickCounter;
+import net.minecraft.client.render.WorldRenderer;
+import net.minecraft.client.util.ObjectAllocator;
+import net.minecraft.entity.Entity;
+import net.minecraft.util.math.MathHelper;
 
 @Mixin(value = WorldRenderer.class, priority = 1005)
 public abstract class MixinWorldRenderer_freeCam
@@ -64,6 +67,7 @@ public abstract class MixinWorldRenderer_freeCam
         return camera.getFocusedEntity();
     }
 
+	// cullTerrain -> method_74752
     // These injections will fail when Sodium is present, but the Free Camera
     // rendering seems to work fine with Sodium without these anyway
     @Inject(method = "method_74752", require = 0,
@@ -80,6 +84,7 @@ public abstract class MixinWorldRenderer_freeCam
         }
     }
 
+	// cullTerrain -> method_74752
     // These injections will fail when Sodium is present, but the Free Camera
     // rendering seems to work fine with Sodium without these anyway
     @Inject(method = "method_74752", require = 0,

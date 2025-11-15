@@ -2,7 +2,6 @@ package fi.dy.masa.tweakeroo.util;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.WorldRenderer;
 import net.minecraft.client.world.ClientWorld;
@@ -11,7 +10,6 @@ import net.minecraft.registry.RegistryKey;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.ChunkStatus;
-
 import fi.dy.masa.malilib.util.EntityUtils;
 import fi.dy.masa.tweakeroo.Tweakeroo;
 import fi.dy.masa.tweakeroo.config.Configs;

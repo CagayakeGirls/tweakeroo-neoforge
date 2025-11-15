@@ -19,13 +19,18 @@ public class EntityRestriction extends UsageRestriction<EntityType<?>>
         {
             try
             {
-                Optional<RegistryEntry.Reference<EntityType<?>>> opt = Registries.ENTITY_TYPE.getEntry(Identifier.tryParse(name));
+				Identifier id = Identifier.tryParse(name);
 
-                if (opt.isPresent())
-                {
-                    set.add(opt.get().value());
-                    continue;
-                }
+				if (id != null)
+				{
+					Optional<RegistryEntry.Reference<EntityType<?>>> opt = Registries.ENTITY_TYPE.getEntry(id);
+
+					if (opt.isPresent())
+					{
+						set.add(opt.get().value());
+						continue;
+					}
+				}
             }
             catch (Exception ignore) {}
 

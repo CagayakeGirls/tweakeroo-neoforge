@@ -1,7 +1,6 @@
 package fi.dy.masa.tweakeroo.mixin.item;
 
 import java.util.Optional;
-
 import net.minecraft.item.BundleItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.tooltip.TooltipData;

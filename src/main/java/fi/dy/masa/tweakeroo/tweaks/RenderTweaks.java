@@ -5,12 +5,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import javax.annotation.Nullable;
-
-import fi.dy.masa.malilib.render.RenderUtils;
-import org.joml.Matrix4f;
-import org.joml.Matrix4fStack;
-
-import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -29,6 +23,11 @@ import net.minecraft.world.World;
 import net.minecraft.world.chunk.ChunkSection;
 import net.minecraft.world.chunk.ChunkStatus;
 import net.minecraft.world.chunk.WorldChunk;
+import fi.dy.masa.malilib.render.RenderUtils;
+import org.joml.Matrix4f;
+import org.joml.Matrix4fStack;
+
+import com.mojang.blaze3d.systems.RenderSystem;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import fi.dy.masa.malilib.util.InfoUtils;
@@ -48,9 +47,9 @@ import fi.dy.masa.tweakeroo.world.FakeWorld;
  */
 public class RenderTweaks
 {
-    private static final ConcurrentHashMap<Long, ListMapEntry> SELECTIVE_BLACKLIST = new ConcurrentHashMap<Long, ListMapEntry>();
-    private static final ConcurrentHashMap<Long, ListMapEntry> SELECTIVE_WHITELIST = new ConcurrentHashMap<Long, ListMapEntry>();
-    private static final ConcurrentHashMap<Long, ListMapEntry> CACHED_LIST = new ConcurrentHashMap<Long, ListMapEntry>();
+    private static final ConcurrentHashMap<Long, ListMapEntry> SELECTIVE_BLACKLIST = new ConcurrentHashMap<>();
+    private static final ConcurrentHashMap<Long, ListMapEntry> SELECTIVE_WHITELIST = new ConcurrentHashMap<>();
+    private static final ConcurrentHashMap<Long, ListMapEntry> CACHED_LIST = new ConcurrentHashMap<>();
 
     public static final int PASSTHROUGH = 1024;
 
@@ -456,11 +455,11 @@ public class RenderTweaks
             // List<BlockPos> brokenBlocks = pistonHandler.getBrokenBlocks();
             List<BlockPos> movedBlocks = pistonHandler.getMovedBlocks();
 
-            ArrayList<ListMapEntry> toMoveWhitelist = new ArrayList<ListMapEntry>();
-            ArrayList<ListMapEntry> toMoveBlacklist = new ArrayList<ListMapEntry>();
+            ArrayList<ListMapEntry> toMoveWhitelist = new ArrayList<>();
+            ArrayList<ListMapEntry> toMoveBlacklist = new ArrayList<>();
 
-            ArrayList<ListMapEntry> toAddWhitelist = new ArrayList<ListMapEntry>();
-            ArrayList<ListMapEntry> toAddBlacklist = new ArrayList<ListMapEntry>();
+            ArrayList<ListMapEntry> toAddWhitelist = new ArrayList<>();
+            ArrayList<ListMapEntry> toAddBlacklist = new ArrayList<>();
 
             for (BlockPos p : movedBlocks)
             {
@@ -537,17 +536,12 @@ public class RenderTweaks
             return true;
         }
 
-        switch ((UsageRestriction.ListType) Configs.Lists.SELECTIVE_BLOCKS_LIST_TYPE.getOptionListValue())
-        {
-            case NONE:
-                return true;
-            case WHITELIST:
-                return SELECTIVE_WHITELIST.containsKey(key);
-            case BLACKLIST:
-                return !SELECTIVE_BLACKLIST.containsKey(key);
-        }
-
-        return false;
+	    return switch ((UsageRestriction.ListType) Configs.Lists.SELECTIVE_BLOCKS_LIST_TYPE.getOptionListValue())
+	    {
+		    case NONE -> true;
+		    case WHITELIST -> SELECTIVE_WHITELIST.containsKey(key);
+		    case BLACKLIST -> !SELECTIVE_BLACKLIST.containsKey(key);
+	    };
     }
 
     public static void rebuildLists()
@@ -617,12 +611,10 @@ public class RenderTweaks
             {
                 ConcurrentHashMap<Long, ListMapEntry> list = (listtype == UsageRestriction.ListType.WHITELIST) ? SELECTIVE_WHITELIST
                                                                                                                : SELECTIVE_BLACKLIST;
-                Iterator<ListMapEntry> iterator = list.values().iterator();
-                while (iterator.hasNext())
-                {
-                    ListMapEntry entry = iterator.next();
-                    CACHED_LIST.put(entry.currentPosition.asLong(), entry);
-                }
+	            for (ListMapEntry entry : list.values())
+	            {
+		            CACHED_LIST.put(entry.currentPosition.asLong(), entry);
+	            }
             }
 
             previousSelectiveToggle = toggle;
@@ -677,12 +669,10 @@ public class RenderTweaks
             {
                 ConcurrentHashMap<Long, ListMapEntry> list = (listtype == UsageRestriction.ListType.WHITELIST) ? SELECTIVE_WHITELIST
                                                                                                                : SELECTIVE_BLACKLIST;
-                Iterator<ListMapEntry> iterator = list.values().iterator();
-                while (iterator.hasNext())
-                {
-                    ListMapEntry entry = iterator.next();
-                    CACHED_LIST.put(entry.currentPosition.asLong(), entry);
-                }
+	            for (ListMapEntry entry : list.values())
+	            {
+		            CACHED_LIST.put(entry.currentPosition.asLong(), entry);
+	            }
             }
         }
         else if (listtype != UsageRestriction.ListType.NONE)
@@ -805,7 +795,7 @@ public class RenderTweaks
     {
 
         Iterator<ListMapEntry> iterator = map.values().iterator();
-        ArrayList<String> entries = new ArrayList<String>();
+        ArrayList<String> entries = new ArrayList<>();
 
         while (iterator.hasNext())
         {

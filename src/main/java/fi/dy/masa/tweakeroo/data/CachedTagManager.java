@@ -5,14 +5,13 @@ import fi.dy.masa.malilib.data.CachedTagKey;
 import fi.dy.masa.tweakeroo.Reference;
 import fi.dy.masa.tweakeroo.Tweakeroo;
 import fi.dy.masa.tweakeroo.config.Configs;
+import java.util.ArrayList;
+import java.util.List;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.tag.BlockTags;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Caches Block/Item Tags as if they are real Vanilla Block/Item tags.

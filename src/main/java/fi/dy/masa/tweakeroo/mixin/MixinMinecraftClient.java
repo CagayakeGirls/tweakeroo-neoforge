@@ -10,6 +10,11 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import fi.dy.masa.tweakeroo.config.FeatureToggle;
+import fi.dy.masa.tweakeroo.tweaks.MiscTweaks;
+import fi.dy.masa.tweakeroo.tweaks.PlacementTweaks;
+import fi.dy.masa.tweakeroo.tweaks.RenderTweaks;
+import fi.dy.masa.tweakeroo.util.IMinecraftClientInvoker;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.network.ClientPlayerEntity;
@@ -21,12 +26,6 @@ import net.minecraft.client.world.ClientWorld;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
-
-import fi.dy.masa.tweakeroo.config.FeatureToggle;
-import fi.dy.masa.tweakeroo.tweaks.MiscTweaks;
-import fi.dy.masa.tweakeroo.tweaks.PlacementTweaks;
-import fi.dy.masa.tweakeroo.tweaks.RenderTweaks;
-import fi.dy.masa.tweakeroo.util.IMinecraftClientInvoker;
 
 @Mixin(MinecraftClient.class)
 public abstract class MixinMinecraftClient implements IMinecraftClientInvoker
@@ -98,13 +97,9 @@ public abstract class MixinMinecraftClient implements IMinecraftClientInvoker
 
     @Inject(method = "doAttack", at = {
             @At(value = "INVOKE",
-                target = "Lnet/minecraft/client/network/ClientPlayerInteractionManager;attackEntity(" +
-                        "Lnet/minecraft/entity/player/PlayerEntity;" +
-                        "Lnet/minecraft/entity/Entity;)V"),
+                target = "Lnet/minecraft/client/network/ClientPlayerInteractionManager;attackEntity(Lnet/minecraft/entity/player/PlayerEntity;Lnet/minecraft/entity/Entity;)V"),
             @At(value = "INVOKE",
-                target = "Lnet/minecraft/client/network/ClientPlayerInteractionManager;attackBlock(" +
-                        "Lnet/minecraft/util/math/BlockPos;" +
-                        "Lnet/minecraft/util/math/Direction;)Z")
+                target = "Lnet/minecraft/client/network/ClientPlayerInteractionManager;attackBlock(Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/util/math/Direction;)Z")
     })
     private void onLeftClickMousePre(CallbackInfoReturnable<Boolean> cir)
     {
@@ -121,11 +116,7 @@ public abstract class MixinMinecraftClient implements IMinecraftClientInvoker
 
     @Redirect(method = "doItemUse()V", at = @At(
             value = "INVOKE",
-            target = "Lnet/minecraft/client/network/ClientPlayerInteractionManager;interactBlock(" +
-                    "Lnet/minecraft/client/network/ClientPlayerEntity;" +
-                    "Lnet/minecraft/util/Hand;" +
-                    "Lnet/minecraft/util/hit/BlockHitResult;" +
-                    ")Lnet/minecraft/util/ActionResult;"))
+            target = "Lnet/minecraft/client/network/ClientPlayerInteractionManager;interactBlock(Lnet/minecraft/client/network/ClientPlayerEntity;Lnet/minecraft/util/Hand;Lnet/minecraft/util/hit/BlockHitResult;)Lnet/minecraft/util/ActionResult;"))
     private ActionResult onProcessRightClickBlock(
             ClientPlayerInteractionManager controller,
             ClientPlayerEntity player,

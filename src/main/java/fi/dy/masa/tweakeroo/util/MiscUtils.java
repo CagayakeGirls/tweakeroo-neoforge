@@ -98,17 +98,21 @@ public class MiscUtils
     {
         MinecraftClient mc = MinecraftClient.getInstance();
         ClientPlayerEntity player = mc.player;
-        Input input = player.input;
 
-        //if (input.jumping || input.sneaking ||
-        if (input.playerInput.jump() || input.playerInput.sneak() ||
-                player.forwardSpeed != 0 || player.sidewaysSpeed != 0 || player.getAbilities().flying == false)
-        {
-            return;
-        }
+		if (player != null)
+		{
+			Input input = player.input;
 
-        double factor = Configs.Generic.FLY_DECELERATION_FACTOR.getDoubleValue();
-        player.setVelocity(player.getVelocity().multiply(factor));
+			//if (input.jumping || input.sneaking ||
+			if (input.playerInput.jump() || input.playerInput.sneak() ||
+				player.forwardSpeed != 0 || player.sidewaysSpeed != 0 || player.getAbilities().flying == false)
+			{
+				return;
+			}
+
+			double factor = Configs.Generic.FLY_DECELERATION_FACTOR.getDoubleValue();
+			player.setVelocity(player.getVelocity().multiply(factor));
+		}
     }
 
     public static Vec3d calculatePlayerMotionWithDeceleration(Vec3d lastMotion,
@@ -400,6 +404,7 @@ public class MiscUtils
 
     public static void printDeathCoordinates(MinecraftClient mc)
     {
+		if (mc.player == null) return;
         BlockPos pos = PositionUtils.getEntityBlockPos(mc.player);
         String dim = mc.player.getEntityWorld().getRegistryKey().getValue().toString();
         String str = StringUtils.translate("tweakeroo.message.death_coordinates",
@@ -474,7 +479,7 @@ public class MiscUtils
                               centerX + range, centerY + range, centerZ + range);
             Predicate<Entity> filter = (e) -> isTameableOwnedBy(e, uuid);
 
-            for (Entity entity : world.getOtherEntities(null, box, filter))
+            for (Entity entity : world.getOtherEntities((Entity) null, box, filter))
             {
                 if (((TameableEntity) entity).isInSittingPose() != sitDown)
                 {
@@ -507,6 +512,7 @@ public class MiscUtils
 
     public static void rightClickEntity(Entity entity, MinecraftClient mc, PlayerEntity player)
     {
+		if (mc.interactionManager == null) return;
         Hand hand = Hand.MAIN_HAND;
         ActionResult actionResult = mc.interactionManager.interactEntityAtLocation(player, entity, new EntityHitResult(entity), hand);
 
@@ -531,10 +537,9 @@ public class MiscUtils
         entity.lastYaw = yaw;
         entity.lastPitch = pitch;
 
-        if (entity instanceof LivingEntity)
+        if (entity instanceof LivingEntity living)
         {
-            LivingEntity living = (LivingEntity) entity;
-            living.headYaw = yaw;
+	        living.headYaw = yaw;
             living.lastHeadYaw = yaw;
         }
     }
@@ -739,6 +744,22 @@ public class MiscUtils
 
         return false;
     }
+
+	public static void toggleGammaOverrideWithMessage()
+	{
+		boolean orig = FeatureToggle.TWEAK_GAMMA_OVERRIDE.getBooleanValue();
+
+		if (!orig)
+		{
+			FeatureToggle.TWEAK_GAMMA_OVERRIDE.setBooleanValue(true);
+			InfoUtils.printBooleanConfigToggleMessage(FeatureToggle.TWEAK_GAMMA_OVERRIDE.getPrettyName(), true);
+		}
+		else
+		{
+			FeatureToggle.TWEAK_GAMMA_OVERRIDE.setBooleanValue(false);
+			InfoUtils.printBooleanConfigToggleMessage(FeatureToggle.TWEAK_GAMMA_OVERRIDE.getPrettyName(), false);
+		}
+	}
 
     public static class PostKeyAction
     {

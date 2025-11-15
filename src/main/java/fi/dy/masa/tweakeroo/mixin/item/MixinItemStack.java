@@ -1,7 +1,6 @@
 package fi.dy.masa.tweakeroo.mixin.item;
 
 import java.util.function.Consumer;
-
 import net.minecraft.block.ShulkerBoxBlock;
 import net.minecraft.component.ComponentMap;
 import net.minecraft.component.ComponentType;

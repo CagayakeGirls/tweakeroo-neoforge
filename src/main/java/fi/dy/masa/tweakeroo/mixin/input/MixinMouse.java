@@ -1,12 +1,12 @@
 package fi.dy.masa.tweakeroo.mixin.input;
 
-import net.minecraft.client.Mouse;
-import net.minecraft.util.Util;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 
 import fi.dy.masa.tweakeroo.config.Configs;
+import net.minecraft.client.Mouse;
+import net.minecraft.util.Util;
 
 @Mixin(Mouse.class)
 public abstract class MixinMouse

@@ -1,23 +1,6 @@
 package fi.dy.masa.tweakeroo.config;
 
 import fi.dy.masa.malilib.config.options.ConfigDouble;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.block.entity.SignBlockEntity;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.hud.debug.DebugHudEntries;
-import net.minecraft.client.gui.hud.debug.DebugHudEntryVisibility;
-import net.minecraft.client.gui.hud.debug.DebugHudProfile;
-import net.minecraft.client.option.KeyBinding;
-import net.minecraft.client.util.InputUtil;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.util.hit.BlockHitResult;
-import net.minecraft.util.hit.HitResult;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
-
 import fi.dy.masa.malilib.config.IConfigBoolean;
 import fi.dy.masa.malilib.config.options.ConfigBoolean;
 import fi.dy.masa.malilib.gui.GuiBase;
@@ -36,6 +19,22 @@ import fi.dy.masa.tweakeroo.mixin.option.IMixinSimpleOption;
 import fi.dy.masa.tweakeroo.renderer.InventoryOverlayHandler;
 import fi.dy.masa.tweakeroo.tweaks.RenderTweaks;
 import fi.dy.masa.tweakeroo.util.*;
+import net.minecraft.block.Blocks;
+import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.block.entity.SignBlockEntity;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.hud.debug.DebugHudEntries;
+import net.minecraft.client.gui.hud.debug.DebugHudEntryVisibility;
+import net.minecraft.client.gui.hud.debug.DebugHudProfile;
+import net.minecraft.client.option.KeyBinding;
+import net.minecraft.client.util.InputUtil;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.registry.RegistryKey;
+import net.minecraft.util.hit.BlockHitResult;
+import net.minecraft.util.hit.HitResult;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 
 public class Callbacks
 {
@@ -508,12 +507,13 @@ public class Callbacks
                     BlockPos pos = ((BlockHitResult) trace).getBlockPos();
                     BlockEntity te = this.mc.world.getBlockEntity(pos);
 
-                    if (te instanceof SignBlockEntity)
+                    if (te instanceof SignBlockEntity && this.mc.player != null)
                     {
-                        MiscUtils.copyTextFromSign((SignBlockEntity) te, ((SignBlockEntity) te).isPlayerFacingFront(mc.player));
+                        MiscUtils.copyTextFromSign((SignBlockEntity) te, ((SignBlockEntity) te).isPlayerFacingFront(this.mc.player));
                         InfoUtils.printActionbarMessage("tweakeroo.message.sign_text_copied");
                     }
                 }
+
                 return true;
             }
             else if (key == Hotkeys.HOTBAR_SWAP_1.getKeybind())

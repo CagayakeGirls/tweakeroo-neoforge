@@ -1,11 +1,12 @@
 package fi.dy.masa.tweakeroo.mixin.block;
 
-import org.spongepowered.asm.mixin.Mixin;
+import javax.annotation.Nonnull;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.ScaffoldingBlock;
+import org.spongepowered.asm.mixin.Mixin;
 import fi.dy.masa.tweakeroo.config.Configs;
 
 
@@ -19,7 +20,7 @@ public abstract class MixinScaffoldingBlock extends Block
 
     @Deprecated
     @Override
-    public BlockRenderType getRenderType(BlockState state)
+    public @Nonnull BlockRenderType getRenderType(@Nonnull BlockState state)
     {
         if (Configs.Disable.DISABLE_RENDERING_SCAFFOLDING.getBooleanValue() &&
             state.getBlock() == Blocks.SCAFFOLDING)

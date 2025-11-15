@@ -1,9 +1,6 @@
 package fi.dy.masa.tweakeroo.tweaks;
 
 import javax.annotation.Nullable;
-import java.util.*;
-import java.util.function.Consumer;
-import org.jetbrains.annotations.NotNull;
 import net.minecraft.block.Block;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
@@ -16,6 +13,9 @@ import net.minecraft.registry.Registries;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.gen.chunk.FlatChunkGeneratorLayer;
+import java.util.*;
+import java.util.function.Consumer;
+import org.jetbrains.annotations.NotNull;
 import fi.dy.masa.malilib.config.IConfigBoolean;
 import fi.dy.masa.malilib.config.IConfigInteger;
 import fi.dy.masa.malilib.gui.Message;
@@ -331,13 +331,17 @@ public class MiscTweaks
     {
         try
         {
-            //return Registries.BLOCK.getOrEmpty(identifier).orElse(null);
-            Optional<RegistryEntry.Reference<Block>> opt = Registries.BLOCK.getEntry(Identifier.tryParse(name));
+	        Identifier id = Identifier.tryParse(name);
 
-            if (opt.isPresent())
-            {
-                return opt.get().value();
-            }
+			if (id != null)
+			{
+				Optional<RegistryEntry.Reference<Block>> opt = Registries.BLOCK.getEntry(id);
+
+				if (opt.isPresent())
+				{
+					return opt.get().value();
+				}
+			}
 
             return null;
         }

@@ -2,9 +2,6 @@ package fi.dy.masa.tweakeroo.renderer;
 
 import java.util.HashSet;
 import java.util.Set;
-import org.joml.Matrix4f;
-
-import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.block.ShulkerBoxBlock;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.CrafterBlockEntity;
@@ -28,7 +25,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.util.math.MathHelper;
+import org.joml.Matrix4f;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import fi.dy.masa.malilib.config.HudAlignment;
 import fi.dy.masa.malilib.render.InventoryOverlay;
 import fi.dy.masa.malilib.util.GuiUtils;

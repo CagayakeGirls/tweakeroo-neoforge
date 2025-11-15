@@ -1,5 +1,6 @@
 package fi.dy.masa.tweakeroo.util;
 
+import javax.annotation.Nonnull;
 import net.minecraft.client.input.KeyboardInput;
 import net.minecraft.client.option.GameOptions;
 

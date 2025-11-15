@@ -3,7 +3,6 @@ package fi.dy.masa.tweakeroo.util;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
-
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -36,16 +35,21 @@ public class ItemRestriction
             try
             {
                 //Item item = Registries.ITEM.get(Identifier.tryParse(name));
-                Optional<RegistryEntry.Reference<Item>> opt = Registries.ITEM.getEntry(Identifier.tryParse(name));
+	            Identifier id = Identifier.tryParse(name);
 
-                if (opt.isPresent() && opt.get().value() != Items.AIR)
-                {
-                    set.add(opt.get().value());
-                }
-                else
-                {
-                    Tweakeroo.LOGGER.warn("Invalid item name in a black- or whitelist: '{}", name);
-                }
+				if (id != null)
+				{
+					Optional<RegistryEntry.Reference<Item>> opt = Registries.ITEM.getEntry(id);
+
+					if (opt.isPresent() && opt.get().value() != Items.AIR)
+					{
+						set.add(opt.get().value());
+					}
+					else
+					{
+						Tweakeroo.LOGGER.warn("Invalid item name in a black- or whitelist: '{}", name);
+					}
+				}
             }
             catch (Exception e)
             {
@@ -56,16 +60,11 @@ public class ItemRestriction
 
     public boolean isItemAllowed(ItemStack stack)
     {
-        switch (this.type)
-        {
-            case BLACKLIST:
-                return this.blackList.contains(stack.getItem()) == false;
-
-            case WHITELIST:
-                return this.whiteList.contains(stack.getItem());
-
-            default:
-                return true;
-        }
+	    return switch (this.type)
+	    {
+		    case BLACKLIST -> !this.blackList.contains(stack.getItem());
+		    case WHITELIST -> this.whiteList.contains(stack.getItem());
+		    default -> true;
+	    };
     }
 }

@@ -1,11 +1,5 @@
 package fi.dy.masa.tweakeroo.mixin.hud;
 
-import net.minecraft.client.gui.hud.ChatHud;
-import net.minecraft.client.gui.hud.MessageIndicator;
-import net.minecraft.network.message.MessageSignatureData;
-import net.minecraft.text.MutableText;
-import net.minecraft.text.Text;
-import net.minecraft.util.math.ColorHelper;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
@@ -13,6 +7,12 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 
 import fi.dy.masa.tweakeroo.config.FeatureToggle;
 import fi.dy.masa.tweakeroo.util.MiscUtils;
+import net.minecraft.client.gui.hud.ChatHud;
+import net.minecraft.client.gui.hud.MessageIndicator;
+import net.minecraft.network.message.MessageSignatureData;
+import net.minecraft.text.MutableText;
+import net.minecraft.text.Text;
+import net.minecraft.util.math.ColorHelper;
 
 @Mixin(value = ChatHud.class, priority = 1100)
 public abstract class MixinChatHud
@@ -31,10 +31,11 @@ public abstract class MixinChatHud
         return componentIn;
     }
 
+	// method_71992(Lnet/minecraft/client/gui/GuiGraphics;IFFIIIIILnet/minecraft/client/GuiMessage$Line;IF)V // ARGB;color
     // Bytecode-aware Mixin
     @Redirect(method = "method_71992(Lnet/minecraft/client/gui/DrawContext;IFFIIIIILnet/minecraft/client/gui/hud/ChatHudLine$Visible;IF)V",
               at = @At(value = "INVOKE",
-                       target = "net/minecraft/util/math/ColorHelper.withAlpha (FI)I",
+                       target = "Lnet/minecraft/util/math/ColorHelper;withAlpha(FI)I",
                        ordinal = 0))
     private int tweakeroo_overrideChatBackgroundColor(float alpha, int color)
     {

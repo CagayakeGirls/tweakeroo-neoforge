@@ -1,12 +1,6 @@
 package fi.dy.masa.tweakeroo.gui;
 
 import org.jetbrains.annotations.Nullable;
-
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.entity.Entity;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.world.World;
-
 import fi.dy.masa.malilib.gui.GuiListBase;
 import fi.dy.masa.malilib.gui.Message;
 import fi.dy.masa.malilib.gui.button.ButtonBase;
@@ -20,6 +14,10 @@ import fi.dy.masa.tweakeroo.gui.widgets.WidgetCameraPresetEntry;
 import fi.dy.masa.tweakeroo.gui.widgets.WidgetCameraPresetList;
 import fi.dy.masa.tweakeroo.util.CameraPreset;
 import fi.dy.masa.tweakeroo.util.CameraUtils;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.entity.Entity;
+import net.minecraft.registry.RegistryKey;
+import net.minecraft.world.World;
 
 public class GuiCameraPresetEditor  extends GuiListBase<CameraPreset, WidgetCameraPresetEntry, WidgetCameraPresetList>
 									implements ISelectionListener<CameraPreset>

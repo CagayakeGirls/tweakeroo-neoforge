@@ -1,10 +1,6 @@
 package fi.dy.masa.tweakeroo.mixin.freecam;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
-
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.render.GameRenderer;
-import net.minecraft.entity.Entity;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -16,6 +12,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import fi.dy.masa.tweakeroo.config.Configs;
 import fi.dy.masa.tweakeroo.config.FeatureToggle;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.render.GameRenderer;
+import net.minecraft.entity.Entity;
 
 @Mixin(value = GameRenderer.class, priority = 1005)
 public abstract class MixinGameRenderer_freeCam
@@ -39,7 +38,7 @@ public abstract class MixinGameRenderer_freeCam
         return !FeatureToggle.TWEAK_FREE_CAMERA.getBooleanValue() && value;
     }
 
-    @Redirect(method = "updateCrosshairTarget", at = @At(value = "INVOKE",
+    @Redirect(method = "updateCrosshairTarget(F)V", at = @At(value = "INVOKE",
               target = "Lnet/minecraft/client/MinecraftClient;getCameraEntity()Lnet/minecraft/entity/Entity;"))
     private Entity tweakeroo_overrideCameraEntityForRayTrace(MinecraftClient mc)
     {

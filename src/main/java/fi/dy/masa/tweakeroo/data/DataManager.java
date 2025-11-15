@@ -1,12 +1,10 @@
 package fi.dy.masa.tweakeroo.data;
 
 import javax.annotation.Nullable;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-
 import net.minecraft.server.integrated.IntegratedServer;
 import net.minecraft.util.Identifier;
-
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import fi.dy.masa.malilib.interfaces.IServerListener;
 import fi.dy.masa.tweakeroo.Tweakeroo;
 

@@ -1,7 +1,7 @@
 package fi.dy.masa.tweakeroo.mixin.screen;
 
 import java.util.Collections;
-
+import javax.annotation.Nonnull;
 import net.minecraft.block.entity.CommandBlockBlockEntity;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ingame.AbstractCommandBlockScreen;
@@ -136,7 +136,7 @@ public abstract class MixinCommandBlockScreen extends AbstractCommandBlockScreen
     }
 
     @Override
-    public void render(DrawContext drawContext, int mouseX, int mouseY, float partialTicks)
+    public void render(@Nonnull DrawContext drawContext, int mouseX, int mouseY, float partialTicks)
     {
         super.render(drawContext, mouseX, mouseY, partialTicks);
 

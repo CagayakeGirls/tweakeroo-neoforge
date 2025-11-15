@@ -1,15 +1,5 @@
 package fi.dy.masa.tweakeroo.mixin.block;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.block.entity.SignBlockEntity;
-import net.minecraft.block.entity.SignText;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.screen.ingame.HangingSignEditScreen;
-import net.minecraft.client.gui.screen.ingame.SignEditScreen;
-import net.minecraft.storage.ReadView;
-import net.minecraft.util.math.BlockPos;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -20,6 +10,16 @@ import fi.dy.masa.tweakeroo.config.FeatureToggle;
 import fi.dy.masa.tweakeroo.util.IGuiEditSign;
 import fi.dy.masa.tweakeroo.util.ISignTextAccess;
 import fi.dy.masa.tweakeroo.util.MiscUtils;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.block.entity.BlockEntityType;
+import net.minecraft.block.entity.SignBlockEntity;
+import net.minecraft.block.entity.SignText;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.screen.ingame.HangingSignEditScreen;
+import net.minecraft.client.gui.screen.ingame.SignEditScreen;
+import net.minecraft.storage.ReadView;
+import net.minecraft.util.math.BlockPos;
 
 @Mixin(SignBlockEntity.class)
 public abstract class MixinSignBlockEntity extends BlockEntity implements ISignTextAccess
