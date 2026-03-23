@@ -1,0 +1,32 @@
+plugins {
+    id "java-gradle-plugin"
+}
+
+repositories {
+    mavenCentral()
+    maven { url = "https://maven.fabricmc.net/" }
+    maven { url = "https://maven.architectury.dev/" }
+    maven { url = "https://maven.neoforged.net/releases/" }
+}
+
+def catalogs = project.extensions.getByType(VersionCatalogsExtension)
+def libs = catalogs.named("libs")
+
+dependencies {
+    gradleApi()
+
+    implementation(pluginDep(libs.findPlugin("architectury-loom").get()))
+}
+
+static def pluginDep(Provider<PluginDependency> plugin) {
+    return plugin.map { it.pluginId + ":" + it.pluginId + ".gradle.plugin:" + it.version }
+}
+
+gradlePlugin {
+    plugins {
+        create("extra-plugin") {
+            id = "team.cagayakegirls.scripts"
+            implementationClass = "team.cagayakegirls.scripts.CagayakeGirlsGradlePlugin"
+        }
+    }
+}

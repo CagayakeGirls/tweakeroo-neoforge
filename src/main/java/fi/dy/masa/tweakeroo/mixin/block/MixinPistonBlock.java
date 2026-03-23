@@ -1,7 +1,7 @@
 package fi.dy.masa.tweakeroo.mixin.block;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
+//import net.fabricmc.api.EnvType;
+//import net.fabricmc.api.Environment;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.piston.PistonBaseBlock;
@@ -19,7 +19,7 @@ import fi.dy.masa.tweakeroo.tweaks.RenderTweaks;
 @Mixin(PistonBaseBlock.class)
 public class MixinPistonBlock
 {
-    @Environment(EnvType.CLIENT)
+//    @Environment(EnvType.CLIENT)
     @Inject(method = "triggerEvent", at = @At("HEAD"))
     private void onSyncedBlockEventInject(BlockState state, Level world, BlockPos pos, int type, int data, CallbackInfoReturnable<Boolean> ci)
     {

@@ -3,8 +3,8 @@ package fi.dy.masa.tweakeroo.network;
 import io.netty.buffer.Unpooled;
 import org.jspecify.annotations.NonNull;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
+//import net.fabricmc.api.EnvType;
+//import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientPacketListener;
@@ -21,7 +21,7 @@ import fi.dy.masa.malilib.network.PacketSplitter;
 import fi.dy.masa.tweakeroo.Tweakeroo;
 import fi.dy.masa.tweakeroo.data.EntityDataManager;
 
-@Environment(EnvType.CLIENT)
+//@Environment(EnvType.CLIENT)
 public abstract class ServuxTweaksHandler<T extends CustomPacketPayload> implements IPluginClientPlayHandler<T>
 {
     private static final ServuxTweaksHandler<ServuxTweaksPacket.Payload> INSTANCE = new ServuxTweaksHandler<>()
