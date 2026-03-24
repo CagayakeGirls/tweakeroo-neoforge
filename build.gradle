@@ -41,6 +41,9 @@ dependencies {
 	testImplementation 'org.mockito:mockito-core:5.8.0'
 	testImplementation 'org.mockito:mockito-junit-jupiter:5.8.0'
 	// NeoForge testing support
+	testImplementation("net.neoforged.fancymodloader:junit-fml:10.0.36") {
+		exclude(group: "org.junit.jupiter")
+	}
 	testImplementation "net.neoforged:testframework:${project.neoforge_version}"
 }
 
@@ -69,6 +72,7 @@ loom {
 //	}
 }
 
+/*
 test {
 	useJUnitPlatform()
 	jvmArgs '-Dtweakeroo.debug.stdout=true'
@@ -79,6 +83,7 @@ test {
 		showStandardStreams = false
 	}
 }
+ */
 
 var generateModMetadata = tasks.register("generateModMetadata", ProcessResources) {
 	var replaceProperties = [
