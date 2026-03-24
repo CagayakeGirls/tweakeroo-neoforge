@@ -17,7 +17,7 @@ Tweakeroo unofficial NeoForge port.
 
 </div></center>
 
-Tweakerge is a client-side Minecraft mod using NeoForge. It adds a selection of miscellaneous, configurable, client-side tweaks to the game. Some examples of these are the "flexible block placement" tweak and the "fast block placement" tweak. For more information and the downloads (compiled builds), see
+Tweakerge is a client-side Minecraft mod using NeoForge. It adds a selection of miscellaneous, configurable, client-side tweaks to the game. Some examples of these are the "flexible block placement" tweak and the "fast block placement" tweak.
 
 [Original Repo Readme](Original-README.md)
 
