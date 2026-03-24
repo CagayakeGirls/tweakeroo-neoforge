@@ -72,7 +72,6 @@ loom {
 //	}
 }
 
-/*
 test {
 	useJUnitPlatform()
 	jvmArgs '-Dtweakeroo.debug.stdout=true'
@@ -83,7 +82,6 @@ test {
 		showStandardStreams = false
 	}
 }
- */
 
 var generateModMetadata = tasks.register("generateModMetadata", ProcessResources) {
 	var replaceProperties = [
