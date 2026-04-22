@@ -46,6 +46,6 @@ side="BOTH"
 [[dependencies."${mod_id}"]]
 modId="mafglib"
 type="required"
-versionRange="${malilib_version_range}"
+versionRange="${mafglib_version_range}"
 ordering="NONE"
 side="BOTH"

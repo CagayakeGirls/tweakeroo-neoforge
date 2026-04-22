@@ -1,14 +1,12 @@
 package fi.dy.masa.tweakeroo.tweaks;
 
-import java.util.Arrays;
-import java.util.List;
+import java.util.HashMap;
 import java.util.Optional;
 import javax.annotation.Nullable;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
-import net.minecraft.block.enums.Orientation;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.network.ClientPlayerInteractionManager;
@@ -19,9 +17,6 @@ import net.minecraft.item.*;
 import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
 import net.minecraft.registry.tag.ItemTags;
 import net.minecraft.screen.ScreenHandler;
-import net.minecraft.state.property.DirectionProperty;
-import net.minecraft.state.property.Properties;
-import net.minecraft.state.property.Property;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
@@ -44,7 +39,6 @@ import fi.dy.masa.malilib.util.restrictions.ItemRestriction;
 import fi.dy.masa.tweakeroo.config.Configs;
 import fi.dy.masa.tweakeroo.config.FeatureToggle;
 import fi.dy.masa.tweakeroo.config.Hotkeys;
-import fi.dy.masa.tweakeroo.mixin.block.IMixinAbstractBlock;
 import fi.dy.masa.tweakeroo.util.*;
 
 public class PlacementTweaks
@@ -59,7 +53,7 @@ public class PlacementTweaks
     private static Direction sideFirstBreaking = null;
     private static Direction sideRotatedFirst = null;
     private static float playerYawFirst;
-    private static ItemStack[] stackBeforeUse = new ItemStack[]{ItemStack.EMPTY, ItemStack.EMPTY};
+    private static HashMap<Hand, ItemStack> stackBeforeUse = new HashMap<>(); // TODO: PUSH UPSTREAM THIS PATCH?
     private static boolean isFirstClick;
     private static boolean isEmulatedClick;
     private static boolean firstWasRotation;
@@ -94,8 +88,7 @@ public class PlacementTweaks
         }
         else
         {
-            stackBeforeUse[0] = ItemStack.EMPTY;
-            stackBeforeUse[1] = ItemStack.EMPTY;
+            stackBeforeUse.clear();
         }
 
         if (use == false)
@@ -106,8 +99,7 @@ public class PlacementTweaks
             // using another item or an empty hand.
             if (attack == false)
             {
-                stackBeforeUse[0] = ItemStack.EMPTY;
-                stackBeforeUse[1] = ItemStack.EMPTY;
+                stackBeforeUse.clear();
             }
         }
 
@@ -144,8 +136,8 @@ public class PlacementTweaks
 
     public static void onProcessRightClickPost(PlayerEntity player, Hand hand)
     {
-        //System.out.printf("onProcessRightClickPost -> tryRestockHand with: %s, current: %s\n", stackBeforeUse[hand.ordinal()], player.getStackInHand(hand));
-        tryRestockHand(player, hand, stackBeforeUse[hand.ordinal()]);
+        //System.out.printf("onProcessRightClickPost -> tryRestockHand with: %s, current: %s\n", stackBeforeUse.getOrDefault(hand, ItemStack.EMPTY), player.getStackInHand(hand));
+        tryRestockHand(player, hand, stackBeforeUse.getOrDefault(hand, ItemStack.EMPTY));
     }
 
     public static void onLeftClickMousePre()
@@ -178,7 +170,7 @@ public class PlacementTweaks
             stackOriginal.isEmpty() == false &&
             canUseItemWithRestriction(HAND_RESTOCK_RESTRICTION, stackOriginal))
         {
-            stackBeforeUse[hand.ordinal()] = stackOriginal.copy();
+            stackBeforeUse.put(hand, stackOriginal.copy());
             hotbarSlot = player.getInventory().selectedSlot;
         }
     }
@@ -204,7 +196,7 @@ public class PlacementTweaks
         {
             InventoryUtils.trySwapCurrentToolIfNearlyBroken();
             Hand hand = Hand.MAIN_HAND;
-            tryRestockHand(mc.player, hand, stackBeforeUse[hand.ordinal()]);
+            tryRestockHand(mc.player, hand, stackBeforeUse.getOrDefault(hand, ItemStack.EMPTY));
         }
     }
 
@@ -416,7 +408,7 @@ public class PlacementTweaks
             sideFirst = sideIn;
             sideRotatedFirst = sideRotated;
             playerYawFirst = yaw;
-            stackBeforeUse[hand.ordinal()] = stackPre;
+            stackBeforeUse.put(hand, stackPre);
             //System.out.printf("plop store @ %s\n", posFirst);
         }
 
@@ -842,11 +834,11 @@ public class PlacementTweaks
         BlockState state = world.getBlockState(posIn);
         ItemStack stackOriginal;
 
-        if (stackBeforeUse[hand.ordinal()].isEmpty() == false &&
+        if (stackBeforeUse.getOrDefault(hand, ItemStack.EMPTY).isEmpty() == false &&
             FeatureToggle.TWEAK_HOTBAR_SLOT_CYCLE.getBooleanValue() == false &&
             FeatureToggle.TWEAK_HOTBAR_SLOT_RANDOMIZER.getBooleanValue() == false)
         {
-            stackOriginal = stackBeforeUse[hand.ordinal()];
+            stackOriginal = stackBeforeUse.getOrDefault(hand, ItemStack.EMPTY);
         }
         else
         {

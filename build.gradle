@@ -55,14 +55,14 @@ loom {
 
 var generateModMetadata = tasks.register("generateModMetadata", ProcessResources) {
     var replaceProperties = [
-            minecraft_version_range: minecraft_version_range,
-            neoforge_version_range : neoforge_version_range,
-            malilib_version_range  : malilib_version_range,
-            fml_version_range      : fml_version_range,
+            mafglib_version_range  : libs.versions.range.mafglib.get(),
+            minecraft_version_range: libs.versions.range.game.get(),
+            neoforge_version_range : libs.versions.range.neoforge.get(),
+            fml_version_range      : libs.versions.range.fml.get(),
             mod_id                 : mod_id,
             mod_name               : mod_name,
             mod_version            : "${project.version}",
-            mod_link               : mod_link
+            mod_link               : libs.versions.mod.link.get()
     ]
     inputs.properties replaceProperties
     expand replaceProperties
@@ -141,15 +141,15 @@ publisher {
         curseforge System.getenv("CURSEFORGE_TOKEN")
     }
 
-    setCurseID("${project.curseforge_id}")
-    setModrinthID("${project.modrinth_id}")
-    setVersionType("${project.version_type}")
+    setCurseID("${libs.versions.platformId.curseforge.get()}")
+    setModrinthID("${libs.versions.platformId.modrinth.get()}")
+    setVersionType("${libs.versions.version.type.get()}")
     setChangelog(file("CHANGELOG.md").getText("UTF-8"))
     setVersion("${project.version}")
     setDisplayName("${project.version}")
     setGameVersions("1.21.1")
     setLoaders(loom.platform.get().id())
-    setCurseEnvironment("client")
+    setCurseEnvironment("${libs.versions.version.env.get()}")
     setArtifact(remapJar)
     addAdditionalFile(sourcesJar)
     curseDepends.required("mafglib")
