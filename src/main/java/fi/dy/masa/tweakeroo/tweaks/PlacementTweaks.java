@@ -53,7 +53,7 @@ public class PlacementTweaks
     private static Direction sideFirstBreaking = null;
     private static Direction sideRotatedFirst = null;
     private static float playerYawFirst;
-    private static HashMap<Hand, ItemStack> stackBeforeUse = new HashMap<>(); // TODO: PUSH UPSTREAM THIS PATCH?
+    private static ItemStack[] stackBeforeUse = new ItemStack[]{ItemStack.EMPTY, ItemStack.EMPTY};
     private static boolean isFirstClick;
     private static boolean isEmulatedClick;
     private static boolean firstWasRotation;
@@ -88,7 +88,8 @@ public class PlacementTweaks
         }
         else
         {
-            stackBeforeUse.clear();
+            stackBeforeUse[0] = ItemStack.EMPTY;
+            stackBeforeUse[1] = ItemStack.EMPTY;
         }
 
         if (use == false)
@@ -99,7 +100,8 @@ public class PlacementTweaks
             // using another item or an empty hand.
             if (attack == false)
             {
-                stackBeforeUse.clear();
+                stackBeforeUse[0] = ItemStack.EMPTY;
+                stackBeforeUse[1] = ItemStack.EMPTY;
             }
         }
 
@@ -136,8 +138,8 @@ public class PlacementTweaks
 
     public static void onProcessRightClickPost(PlayerEntity player, Hand hand)
     {
-        //System.out.printf("onProcessRightClickPost -> tryRestockHand with: %s, current: %s\n", stackBeforeUse.getOrDefault(hand, ItemStack.EMPTY), player.getStackInHand(hand));
-        tryRestockHand(player, hand, stackBeforeUse.getOrDefault(hand, ItemStack.EMPTY));
+        //System.out.printf("onProcessRightClickPost -> tryRestockHand with: %s, current: %s\n", stackBeforeUse[hand.ordinal()], player.getStackInHand(hand));
+        tryRestockHand(player, hand, stackBeforeUse[hand.ordinal()]);
     }
 
     public static void onLeftClickMousePre()
@@ -170,7 +172,7 @@ public class PlacementTweaks
             stackOriginal.isEmpty() == false &&
             canUseItemWithRestriction(HAND_RESTOCK_RESTRICTION, stackOriginal))
         {
-            stackBeforeUse.put(hand, stackOriginal.copy());
+            stackBeforeUse[hand.ordinal()] = stackOriginal.copy();
             hotbarSlot = player.getInventory().selectedSlot;
         }
     }
@@ -196,7 +198,7 @@ public class PlacementTweaks
         {
             InventoryUtils.trySwapCurrentToolIfNearlyBroken();
             Hand hand = Hand.MAIN_HAND;
-            tryRestockHand(mc.player, hand, stackBeforeUse.getOrDefault(hand, ItemStack.EMPTY));
+            tryRestockHand(mc.player, hand, stackBeforeUse[hand.ordinal()]);
         }
     }
 
@@ -408,7 +410,7 @@ public class PlacementTweaks
             sideFirst = sideIn;
             sideRotatedFirst = sideRotated;
             playerYawFirst = yaw;
-            stackBeforeUse.put(hand, stackPre);
+            stackBeforeUse[hand.ordinal()] = stackPre;
             //System.out.printf("plop store @ %s\n", posFirst);
         }
 
@@ -814,7 +816,8 @@ public class PlacementTweaks
     {
         //System.out.printf("processRightClickBlockWrapper() start @ %s, side: %s, hand: %s\n", posIn, sideIn, hand);
         if (FeatureToggle.TWEAK_PLACEMENT_LIMIT.getBooleanValue() &&
-            placementCount >= Configs.Generic.PLACEMENT_LIMIT.getIntegerValue())
+            placementCount >= Configs.Generic.PLACEMENT_LIMIT.getIntegerValue() ||
+            hand.ordinal() >= stackBeforeUse.length)
         {
             return ActionResult.PASS;
         }
@@ -834,11 +837,11 @@ public class PlacementTweaks
         BlockState state = world.getBlockState(posIn);
         ItemStack stackOriginal;
 
-        if (stackBeforeUse.getOrDefault(hand, ItemStack.EMPTY).isEmpty() == false &&
+        if (stackBeforeUse[hand.ordinal()].isEmpty() == false &&
             FeatureToggle.TWEAK_HOTBAR_SLOT_CYCLE.getBooleanValue() == false &&
             FeatureToggle.TWEAK_HOTBAR_SLOT_RANDOMIZER.getBooleanValue() == false)
         {
-            stackOriginal = stackBeforeUse.getOrDefault(hand, ItemStack.EMPTY);
+            stackOriginal = stackBeforeUse[hand.ordinal()];
         }
         else
         {
