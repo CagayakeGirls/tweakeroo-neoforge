@@ -812,7 +812,8 @@ public class PlacementTweaks
     {
         //System.out.printf("processRightClickBlockWrapper() start @ %s, side: %s, hand: %s\n", posIn, sideIn, hand);
         if (FeatureToggle.TWEAK_PLACEMENT_LIMIT.getBooleanValue() &&
-            placementCount >= Configs.Generic.PLACEMENT_LIMIT.getIntegerValue())
+            placementCount >= Configs.Generic.PLACEMENT_LIMIT.getIntegerValue() ||
+            hand.ordinal() >= stackBeforeUse.length)
         {
             return ActionResult.PASS;
         }
