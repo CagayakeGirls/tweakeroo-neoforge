@@ -1,6 +1,8 @@
 plugins {
-	id 'net.fabricmc.fabric-loom' version '1.16.+'
+	id 'team.cagayakegirls.scripts'
+	id 'dev.architectury.loom-no-remap'
 	id 'maven-publish'
+	alias(libs.plugins.modpublisher)
 }
 
 repositories {
@@ -21,21 +23,14 @@ repositories {
 
 dependencies {
 	minecraft "com.mojang:minecraft:${project.minecraft_version}"
-//    mappings loom.officialMojangMappings()
-	implementation "net.fabricmc:fabric-loader:${project.fabric_loader_version}"
+	neoForge "net.neoforged:neoforge:${project.neoforge_version}"
 	implementation "com.google.code.findbugs:jsr305:3.0.2"
 //	implementation "org.jspecify:jspecify:1.0.0"
 
-	implementation "fi.dy.masa.malilib:malilib-fabric-${project.minecraft_version_out}:${project.malilib_version}"
-//	implementation "com.github.sakura-ryoko:malilib:${project.malilib_version}"
+	implementation "team.cagayakegirls.mafglib:mafglib:${project.malilib_version}"
 
-	// Fabric API. This is technically optional, but you probably want it anyway.
-//	compileOnly fabricApi.module("fabric-api-base", project.fabric_api_version)
-//	compileOnly fabricApi.module("fabric-networking-api-v1", project.fabric_api_version)
-//	compileOnly fabricApi.module("fabric-resource-loader-v1", project.fabric_api_version)
-	include(implementation("me.fallenbreath:conditional-mixin-fabric:${project.conditionalmixin_version}"))
+	include(implementation("me.fallenbreath:conditional-mixin-${loom.platform.get().id()}:${project.conditionalmixin_version}"))
 
-	compileOnly "com.terraformersmc:modmenu:${project.mod_menu_version}"
 //	runtimeOnly 'me.fallenbreath:mixin-auditor:0.2.0-u'
 
 	// Test dependencies
@@ -51,8 +46,8 @@ dependencies {
 
 base {
 	group = project.group + "." + project.mod_id
-	archivesName = project.mod_file_name + '-' + project.minecraft_version_out
-	version = project.mod_version
+	archivesName = project.mod_file_name
+	version = "${project.mod_version}+mc${project.minecraft_version_out}"
 
 	if (version.endsWith('-dev')) {
 		version += "." + new Date().format('yyyyMMdd.HHmmss')
@@ -85,20 +80,27 @@ loom {
 //	}
 //}
 
-processResources {
-	// Exclude the GIMP image files
-	exclude '**/*.xcf'
-	exclude '**/xcf'
-
-	// this will ensure that this task is redone when the versions change.
-	//inputs.property "minecraft_version", project.project.minecraft_version
-
-	inputs.property "mod_version", project.mod_version
-
-	filesMatching("fabric.mod.json") {
-		expand "mod_version": project.mod_version
-	}
+var generateModMetadata = tasks.register("generateModMetadata", ProcessResources) {
+	var replaceProperties = [
+			mafglib_version_range  : libs.versions.range.mafglib.get(),
+			minecraft_version_range: libs.versions.range.game.get(),
+			neoforge_version_range : libs.versions.range.neoforge.get(),
+			fml_version_range      : libs.versions.range.fml.get(),
+			mod_id                 : mod_id,
+			mod_name               : mod_name,
+			mod_version            : "${project.version}",
+			mod_link               : libs.versions.mod.link.get()
+	]
+	inputs.properties replaceProperties
+	expand replaceProperties
+	from "src/main/templates"
+	into "build/generated/sources/modMetadata"
 }
+
+sourceSets.main.resources {
+	srcDir generateModMetadata
+}
+
 
 tasks.withType(JavaCompile).configureEach {
 	// ensure that the encoding is set to UTF-8, no matter what the system default is
@@ -146,5 +148,37 @@ publishing {
 		maven {
 			url = "$projectDir/../../CommonMaven"
 		}
+
+		maven {
+			name = "KTTMaven"
+			url = "https://maven.kessokuteatime.work/releases"
+
+			credentials {
+				username = System.getenv("KTT_MAVEN_USERNAME")
+				password = System.getenv("KTT_MAVEN_TOKEN")
+			}
+		}
 	}
 }
+
+publisher {
+	apiKeys {
+		modrinth System.getenv("MODRINTH_TOKEN")
+		curseforge System.getenv("CURSEFORGE_TOKEN")
+	}
+
+	setCurseID("${libs.versions.platformId.curseforge.get()}")
+	setModrinthID("${libs.versions.platformId.modrinth.get()}")
+	setVersionType("${libs.versions.version.type.get()}")
+	setChangelog(file("CHANGELOG.md").getText("UTF-8"))
+	setVersion("${project.version}")
+	setDisplayName("${project.version}")
+	setGameVersions("26.1", "26.1.1", "26.1.2")
+	setLoaders(loom.platform.get().id())
+	setCurseEnvironment("${libs.versions.version.env.get()}")
+	setArtifact(jar)
+	addAdditionalFile(sourcesJar)
+	curseDepends.required("mafglib")
+	modrinthDepends.required("mafglib")
+}
+
