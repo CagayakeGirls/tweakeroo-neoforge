@@ -1,18 +1,16 @@
 [versions]
 range-fml = "[4,)"
-range-game = "[1.21.10,)"
-range-neoforge = "[21.10,)"
+range-game = "[26,)"
+range-neoforge = "[26,)"
 range-mafglib = "[0.4,)"
 
 mod-link = "https://github.com/CagayakeGirls/tweakeroo-neoforge"
 
 version-env = "client"
-version-type = "release"
+version-type = "beta"
 
 platformId-curseforge = "915857"
 platformId-modrinth = "yke6wdGF"
-
-yarn-patch = "1.21+build.4"
 
 architectury-loom = "1.14-SNAPSHOT"
 modpublisher = "2.+"
