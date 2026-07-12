@@ -7,6 +7,9 @@ plugins {
 
 repositories {
 	mavenLocal()
+	maven { url = "https://dl.cloudsmith.io/public/thinkingstudio/forgified-fabric-api/maven/"
+		content { includeGroupAndSubgroups("org.sinytra.forgified-fabric-api") }
+	}
 	maven { url = "https://masa.dy.fi/maven/sakura-ryoko"
 		content {includeGroupAndSubgroups("fi.dy.masa")}
 	}
@@ -27,7 +30,11 @@ dependencies {
 	implementation "com.google.code.findbugs:jsr305:3.0.2"
 //	implementation "org.jspecify:jspecify:1.0.0"
 
-	implementation "team.cagayakegirls.mafglib:mafglib:${project.malilib_version}"
+	implementation("team.cagayakegirls.mafglib:mafglib:${project.malilib_version}") {
+		// The 26.2 foxified networking POM still references an unpublished
+		// Forgified Fabric API base artifact. Its API is not used by Tweakerge.
+		exclude group: "org.sinytra.forgified-fabric-api", module: "fabric-api-base"
+	}
 
 	include(implementation("me.fallenbreath:conditional-mixin-${loom.platform.get().id()}:${project.conditionalmixin_version}"))
 
@@ -173,7 +180,7 @@ publisher {
 	setChangelog(file("CHANGELOG.md").getText("UTF-8"))
 	setVersion("${project.version}")
 	setDisplayName("${project.version}")
-	setGameVersions("26.1", "26.1.1", "26.1.2")
+	setGameVersions("26.2")
 	setLoaders(loom.platform.get().id())
 	setCurseEnvironment("${libs.versions.version.env.get()}")
 	setArtifact(jar)
@@ -181,4 +188,3 @@ publisher {
 	curseDepends.required("mafglib")
 	modrinthDepends.required("mafglib")
 }
-
