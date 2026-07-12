@@ -15,6 +15,7 @@ import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.Util;
+
 import fi.dy.masa.malilib.network.IClientPayloadData;
 import fi.dy.masa.malilib.network.IPluginClientPlayHandler;
 import fi.dy.masa.malilib.network.PacketSplitter;
@@ -27,7 +28,7 @@ public abstract class ServuxTweaksHandler<T extends CustomPacketPayload> impleme
     private static final ServuxTweaksHandler<ServuxTweaksPacket.Payload> INSTANCE = new ServuxTweaksHandler<>()
     {
         @Override
-        public void receive(ServuxTweaksPacket.Payload payload, ClientPlayNetworking.@NonNull Context context)
+        public void receive(ServuxTweaksPacket.@NonNull Payload payload, ClientPlayNetworking.@NonNull Context context)
         {
             ServuxTweaksHandler.INSTANCE.receivePlayPayload(payload, context);
         }
@@ -83,7 +84,7 @@ public abstract class ServuxTweaksHandler<T extends CustomPacketPayload> impleme
                     this.servuxRegistered = true;
                 }
             }
-            case PACKET_S2C_BLOCK_NBT_RESPONSE_SIMPLE -> EntityDataManager.getInstance().handleBlockEntityData(packet.getPos(), packet.getCompound(), null);
+            case PACKET_S2C_BLOCK_NBT_RESPONSE_SIMPLE -> EntityDataManager.getInstance().handleBlockEntityData(packet.getPos(), packet.getCompound());
             case PACKET_S2C_ENTITY_NBT_RESPONSE_SIMPLE -> EntityDataManager.getInstance().handleEntityData(packet.getEntityId(), packet.getCompound());
             case PACKET_S2C_NBT_RESPONSE_DATA ->
             {

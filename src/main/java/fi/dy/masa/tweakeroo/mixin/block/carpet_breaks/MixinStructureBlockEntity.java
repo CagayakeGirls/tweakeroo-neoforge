@@ -1,4 +1,4 @@
-package fi.dy.masa.tweakeroo.mixin.block;
+package fi.dy.masa.tweakeroo.mixin.block.carpet_breaks;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -27,9 +27,9 @@ import fi.dy.masa.tweakeroo.config.FeatureToggle;
 
 @Mixin(value = StructureBlockEntity.class, priority = 999)
 @Restriction(conflict = @Condition(value = ModIds.carpet))
-public abstract class MixinStructureBlockBlockEntity extends BlockEntity
+public abstract class MixinStructureBlockEntity extends BlockEntity
 {
-    private MixinStructureBlockBlockEntity(BlockEntityType<?> blockEntityType, BlockPos blockPos, BlockState blockState)
+    private MixinStructureBlockEntity(BlockEntityType<?> blockEntityType, BlockPos blockPos, BlockState blockState)
     {
         super(blockEntityType, blockPos, blockState);
     }
@@ -57,7 +57,7 @@ public abstract class MixinStructureBlockBlockEntity extends BlockEntity
     }
 
     @Inject(method = "getRelatedCorners", at = @At("HEAD"), cancellable = true)
-    private void tweakeroo_overrideCornerBlockScan(BlockPos start, BlockPos end, CallbackInfoReturnable<Stream<BlockPos>> cir)
+    private void tweakeroo_overrideCornerBlockScan(BlockPos corner1, BlockPos corner2, CallbackInfoReturnable<Stream<BlockPos>> cir)
     {
         if (FeatureToggle.TWEAK_STRUCTURE_BLOCK_LIMIT.getBooleanValue())
         {
