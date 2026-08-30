@@ -27,7 +27,22 @@ dependencies {
 	implementation "com.google.code.findbugs:jsr305:3.0.2"
 //	implementation "org.jspecify:jspecify:1.0.0"
 
-	implementation "team.cagayakegirls.mafglib:mafglib:${project.malilib_version}"
+	implementation("team.cagayakegirls.mafglib:mafglib:${project.malilib_version}") {
+		// foxified-* / forgified-fabric-api are embedded via jarjar at runtime and
+		// their published 26.2 POMs reference unpublished artifacts; they are not
+		// needed on the compile classpath (no foxified types in malilib signatures).
+		exclude group: 'team.cagayakegirls.foxified'
+		exclude group: 'org.sinytra.forgified-fabric-api'
+	}
+
+	// Compile-time only: provides the net.fabricmc.fabric.api.client.networking.v1 types
+	// referenced by malilib's IPluginClientPlayHandler. At runtime the same jar is
+	// jarjar-embedded inside mafglib, so it must not leak into the mod jar.
+	// Transitives are excluded because foxified-networking-api's published POM references
+	// a forgified-fabric-api build that is not published to any maven repository.
+	compileOnly("team.cagayakegirls.foxified:foxified-networking-api:0.2.0+mc26.2") {
+		transitive = false
+	}
 
 	include(implementation("me.fallenbreath:conditional-mixin-${loom.platform.get().id()}:${project.conditionalmixin_version}"))
 
@@ -173,7 +188,7 @@ publisher {
 	setChangelog(file("CHANGELOG.md").getText("UTF-8"))
 	setVersion("${project.version}")
 	setDisplayName("${project.version}")
-	setGameVersions("26.1", "26.1.1", "26.1.2")
+	setGameVersions("26.2")
 	setLoaders(loom.platform.get().id())
 	setCurseEnvironment("${libs.versions.version.env.get()}")
 	setArtifact(jar)

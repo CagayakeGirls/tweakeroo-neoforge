@@ -2,7 +2,7 @@ package fi.dy.masa.tweakeroo.mixin.freecam;
 
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
-import net.minecraft.client.gui.contextualbar.LocatorBarRenderer;
+import net.minecraft.client.gui.contextualbar.LocatorBar;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -11,7 +11,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import fi.dy.masa.tweakeroo.config.Configs;
 import fi.dy.masa.tweakeroo.config.FeatureToggle;
 
-@Mixin(value = LocatorBarRenderer.class, priority = 999)
+@Mixin(value = LocatorBar.class, priority = 999)
 public class MixinLocatorBarRenderer_freeCam
 {
 	@Inject(method = "extractBackground", at = @At("HEAD"), cancellable = true)

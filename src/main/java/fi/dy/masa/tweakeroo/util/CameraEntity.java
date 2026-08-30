@@ -274,6 +274,11 @@ public class CameraEntity extends LocalPlayer
                 removeCamera(mc);
             }
 
+            // MC 26.2: section occlusion culling is driven by this flag instead of the
+            // old per-frame spectator check around terrain culling. Disable it while in
+            // Free Camera mode so the terrain around the free camera stays rendered.
+            mc.smartCull = enabled == false;
+
 //            mc.gameRenderer.setRenderHand(! enabled);
         }
     }

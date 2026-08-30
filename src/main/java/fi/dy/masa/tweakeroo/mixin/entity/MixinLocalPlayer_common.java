@@ -42,7 +42,7 @@ public abstract class MixinLocalPlayer_common extends AbstractClientPlayer
     }
 
     @Inject(method = "handlePortalTransitionEffect", at = @At("HEAD"))
-    private void tweakeroo_disableNauseaEffectPre(CallbackInfo ci)
+    private void tweakeroo_disableNauseaEffectPre(boolean viaScaleBlock, CallbackInfo ci)
     {
         if (Configs.Disable.DISABLE_NAUSEA_EFFECT.getBooleanValue())
         {
@@ -51,7 +51,7 @@ public abstract class MixinLocalPlayer_common extends AbstractClientPlayer
     }
 
     @Inject(method = "handlePortalTransitionEffect", at = @At(value = "TAIL"))
-    private void tweakeroo_disableNauseaEffectPost(CallbackInfo ci)
+    private void tweakeroo_disableNauseaEffectPost(boolean viaScaleBlock, CallbackInfo ci)
     {
         if (Configs.Disable.DISABLE_NAUSEA_EFFECT.getBooleanValue())
         {

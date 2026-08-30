@@ -78,6 +78,17 @@ public abstract class MixinClientLevel extends Level
         }
     }
 
+
+    // MC 26.2: rain particles + sounds moved from WeatherEffectRenderer#tickRainParticles to here
+    @Inject(method = "tickWeatherEffects", at = @At("HEAD"), cancellable = true)
+    private void tweakeroo_cancelWeatherParticlesAndSounds(CallbackInfo ci)
+    {
+        if (Configs.Disable.DISABLE_RAIN_EFFECTS.getBooleanValue())
+        {
+            ci.cancel();
+        }
+    }
+
     @Inject(method = "sendBlockUpdated", at = @At("HEAD"), cancellable = true)
     private void disableChunkReRenders(BlockPos pos, BlockState oldState, BlockState newState, int flags, CallbackInfo ci)
     {

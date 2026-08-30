@@ -1,6 +1,8 @@
 package fi.dy.masa.tweakeroo.mixin.freecam;
 
 import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.client.renderer.state.level.CameraRenderState;
+import org.joml.Matrix4fc;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -13,7 +15,7 @@ import fi.dy.masa.tweakeroo.config.FeatureToggle;
 public abstract class MixinGameRenderer_freeCam
 {
     @Inject(method = "renderItemInHand", at = @At("HEAD"), cancellable = true)
-    private void tweakeroo_removeHandRendering(CallbackInfo ci)
+    private void tweakeroo_removeHandRendering(CameraRenderState cameraState, float f, Matrix4fc matrix4fc, CallbackInfo ci)
     {
         if (FeatureToggle.TWEAK_FREE_CAMERA.getBooleanValue() &&
 			!Configs.Generic.FREE_CAMERA_SHOW_HANDS.getBooleanValue())

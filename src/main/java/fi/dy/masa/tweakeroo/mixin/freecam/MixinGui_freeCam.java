@@ -2,7 +2,7 @@ package fi.dy.masa.tweakeroo.mixin.freecam;
 
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.Gui;
+import net.minecraft.client.gui.Hud;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.world.entity.player.Player;
 import org.spongepowered.asm.mixin.Final;
@@ -16,7 +16,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import fi.dy.masa.tweakeroo.config.Configs;
 import fi.dy.masa.tweakeroo.config.FeatureToggle;
 
-@Mixin(value = Gui.class, priority = 1005)
+@Mixin(value = Hud.class, priority = 1005)
 public abstract class MixinGui_freeCam
 {
     @Shadow @Final private Minecraft minecraft;
@@ -78,13 +78,13 @@ public abstract class MixinGui_freeCam
 	}
 
 	@Inject(method = "nextContextualInfoState", at = @At("HEAD"), cancellable = true)
-	public void tweakeroo_overrideExpBarRendering(CallbackInfoReturnable<Gui.ContextualInfo> cir)
+	public void tweakeroo_overrideExpBarRendering(CallbackInfoReturnable<Hud.ContextualInfo> cir)
 	{
 		// This turns off all status bars
 		if (FeatureToggle.TWEAK_FREE_CAMERA.getBooleanValue() &&
 			!Configs.Generic.FREE_CAMERA_SHOW_STATUS_BARS.getBooleanValue())
 		{
-			cir.setReturnValue(Gui.ContextualInfo.EMPTY);
+			cir.setReturnValue(Hud.ContextualInfo.EMPTY);
 		}
 	}
 }

@@ -150,7 +150,7 @@ public class Callbacks
         Configs.Lists.SELECTIVE_BLOCKS_WHITELIST.setValueChangeCallback((cfg) -> RenderTweaks.rebuildLists());
         Configs.Lists.SELECTIVE_BLOCKS_LIST_TYPE.setValueChangeCallback((cfg) -> RenderTweaks.rebuildLists());
         FeatureToggle.TWEAK_SELECTIVE_BLOCKS_RENDERING.setValueChangeCallback((cfg) -> RenderTweaks.rebuildLists());
-        Configs.Disable.DISABLE_RENDERING_SCAFFOLDING.setValueChangeCallback((cfg) -> mc.levelRenderer.allChanged());
+        Configs.Disable.DISABLE_RENDERING_SCAFFOLDING.setValueChangeCallback((cfg) -> mc.levelRenderer.invalidateCompiledGeometry(mc.level, mc.options, mc.gameRenderer.mainCamera(), mc.getBlockColors()));
         Configs.Generic.TOOL_SWAP_SILK_TOUCH_OVERRIDE.setValueChangeCallback(
                 (cfg) ->
                         CachedTagManager.parseSilkTouchOverride(Configs.Lists.SILK_TOUCH_OVERRIDE.getStrings())
@@ -760,9 +760,9 @@ public class Callbacks
             }
             else if (key == Hotkeys.INVENTORY_PREVIEW_TOGGLE_SCREEN.getKeybind())
             {
-                if (mc.screen instanceof InventoryOverlayScreen)
+                if (mc.gui.screen() instanceof InventoryOverlayScreen)
                 {
-                    mc.setScreen(null);
+                    mc.gui.setScreen(null);
                 }
                 else if (FeatureToggle.TWEAK_INVENTORY_PREVIEW.getBooleanValue() &&
                         Hotkeys.INVENTORY_PREVIEW.getKeybind().isKeybindHeld())

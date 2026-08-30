@@ -28,7 +28,7 @@ public abstract class MixinPlayer_fakeSneak extends LivingEntity
     }
 
     @Inject(method = "isAboveGround", at = @At("HEAD"), cancellable = true)
-    private void tweakeroo_restore_1_15_2_sneaking(CallbackInfoReturnable<Boolean> cir)
+    private void tweakeroo_restore_1_15_2_sneaking(float f, CallbackInfoReturnable<Boolean> cir)
     {
         if (FeatureToggle.TWEAK_SNEAK_1_15_2.getBooleanValue())
         {

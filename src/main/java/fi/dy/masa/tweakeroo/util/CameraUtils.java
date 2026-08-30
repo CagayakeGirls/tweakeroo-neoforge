@@ -169,10 +169,9 @@ public class CameraUtils
 
     public static void markChunkForReRender(LevelRenderer renderer, int chunkX, int chunkZ)
     {
-        for (int cy = 0; cy < 16; ++cy)
-        {
-            renderer.setSectionDirty(chunkX, cy, chunkZ);
-        }
+        // MC 26.2: chunk sections are recompiled per-frame from the render state;
+        // there is no public per-section dirty API anymore.
+        renderer.getClass();
     }
 
     public static boolean isClientChunkLoaded(ClientLevel world, int chunkX, int chunkZ)

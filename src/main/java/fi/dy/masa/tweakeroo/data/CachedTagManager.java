@@ -9,7 +9,11 @@ import java.util.ArrayList;
 import java.util.List;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.Identifier;
+import net.minecraft.tags.TagKey;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 
@@ -35,6 +39,12 @@ public class CachedTagManager
 		CachedBlockTags.getInstance().build(ORE_BLOCKS_KEY, buildOreBlocksCache());
 	}
 
+	private static TagKey<Block> vanillaBlockTag(String name)
+	{
+		// These ore tags still exist as vanilla data but lost their BlockTags constant in 26.2
+		return TagKey.create(Registries.BLOCK, Identifier.withDefaultNamespace(name));
+	}
+
 	private static List<String> buildNeedsPickaxeCache()
 	{
 		List<String> list = new ArrayList<>();
@@ -42,22 +52,10 @@ public class CachedTagManager
 		list.add("#"+BlockTags.IMPERMEABLE.location().toString());
 		// No Glass Pane block tag in Vanilla
 		list.add(BuiltInRegistries.BLOCK.getKey(Blocks.GLASS_PANE).toString());
-		list.add(BuiltInRegistries.BLOCK.getKey(Blocks.BLACK_STAINED_GLASS_PANE).toString());
-		list.add(BuiltInRegistries.BLOCK.getKey(Blocks.BLUE_STAINED_GLASS_PANE).toString());
-		list.add(BuiltInRegistries.BLOCK.getKey(Blocks.BROWN_STAINED_GLASS_PANE).toString());
-		list.add(BuiltInRegistries.BLOCK.getKey(Blocks.CYAN_STAINED_GLASS_PANE).toString());
-		list.add(BuiltInRegistries.BLOCK.getKey(Blocks.GRAY_STAINED_GLASS_PANE).toString());
-		list.add(BuiltInRegistries.BLOCK.getKey(Blocks.GREEN_STAINED_GLASS_PANE).toString());
-		list.add(BuiltInRegistries.BLOCK.getKey(Blocks.LIGHT_BLUE_STAINED_GLASS_PANE).toString());
-		list.add(BuiltInRegistries.BLOCK.getKey(Blocks.LIGHT_GRAY_STAINED_GLASS_PANE).toString());
-		list.add(BuiltInRegistries.BLOCK.getKey(Blocks.LIME_STAINED_GLASS_PANE).toString());
-		list.add(BuiltInRegistries.BLOCK.getKey(Blocks.MAGENTA_STAINED_GLASS_PANE).toString());
-		list.add(BuiltInRegistries.BLOCK.getKey(Blocks.ORANGE_STAINED_GLASS_PANE).toString());
-		list.add(BuiltInRegistries.BLOCK.getKey(Blocks.PINK_STAINED_GLASS_PANE).toString());
-		list.add(BuiltInRegistries.BLOCK.getKey(Blocks.PURPLE_STAINED_GLASS_PANE).toString());
-		list.add(BuiltInRegistries.BLOCK.getKey(Blocks.RED_STAINED_GLASS_PANE).toString());
-		list.add(BuiltInRegistries.BLOCK.getKey(Blocks.YELLOW_STAINED_GLASS_PANE).toString());
-		list.add(BuiltInRegistries.BLOCK.getKey(Blocks.WHITE_STAINED_GLASS_PANE).toString());
+		for (Block pane : Blocks.STAINED_GLASS_PANE.asList())
+		{
+			list.add(BuiltInRegistries.BLOCK.getKey(pane).toString());
+		}
 		// Others?
 		list.add(BuiltInRegistries.BLOCK.getKey(Blocks.BEACON).toString());
 
@@ -106,22 +104,10 @@ public class CachedTagManager
 		list.add("#"+BlockTags.WALL_CORALS.location().toString());        // Wall Coral Fans
 		// No Glass Pane block tag in Vanilla
 		list.add(BuiltInRegistries.BLOCK.getKey(Blocks.GLASS_PANE).toString());
-		list.add(BuiltInRegistries.BLOCK.getKey(Blocks.BLACK_STAINED_GLASS_PANE).toString());
-		list.add(BuiltInRegistries.BLOCK.getKey(Blocks.BLUE_STAINED_GLASS_PANE).toString());
-		list.add(BuiltInRegistries.BLOCK.getKey(Blocks.BROWN_STAINED_GLASS_PANE).toString());
-		list.add(BuiltInRegistries.BLOCK.getKey(Blocks.CYAN_STAINED_GLASS_PANE).toString());
-		list.add(BuiltInRegistries.BLOCK.getKey(Blocks.GRAY_STAINED_GLASS_PANE).toString());
-		list.add(BuiltInRegistries.BLOCK.getKey(Blocks.GREEN_STAINED_GLASS_PANE).toString());
-		list.add(BuiltInRegistries.BLOCK.getKey(Blocks.LIGHT_BLUE_STAINED_GLASS_PANE).toString());
-		list.add(BuiltInRegistries.BLOCK.getKey(Blocks.LIGHT_GRAY_STAINED_GLASS_PANE).toString());
-		list.add(BuiltInRegistries.BLOCK.getKey(Blocks.LIME_STAINED_GLASS_PANE).toString());
-		list.add(BuiltInRegistries.BLOCK.getKey(Blocks.MAGENTA_STAINED_GLASS_PANE).toString());
-		list.add(BuiltInRegistries.BLOCK.getKey(Blocks.ORANGE_STAINED_GLASS_PANE).toString());
-		list.add(BuiltInRegistries.BLOCK.getKey(Blocks.PINK_STAINED_GLASS_PANE).toString());
-		list.add(BuiltInRegistries.BLOCK.getKey(Blocks.PURPLE_STAINED_GLASS_PANE).toString());
-		list.add(BuiltInRegistries.BLOCK.getKey(Blocks.RED_STAINED_GLASS_PANE).toString());
-		list.add(BuiltInRegistries.BLOCK.getKey(Blocks.YELLOW_STAINED_GLASS_PANE).toString());
-		list.add(BuiltInRegistries.BLOCK.getKey(Blocks.WHITE_STAINED_GLASS_PANE).toString());
+		for (Block pane : Blocks.STAINED_GLASS_PANE.asList())
+		{
+			list.add(BuiltInRegistries.BLOCK.getKey(pane).toString());
+		}
 		// No Sculk Block Tags in Vanilla
 		list.add(BuiltInRegistries.BLOCK.getKey(Blocks.CALIBRATED_SCULK_SENSOR).toString());
 		list.add(BuiltInRegistries.BLOCK.getKey(Blocks.SCULK).toString());
@@ -150,14 +136,14 @@ public class CachedTagManager
 	{
 		List<String> list = new ArrayList<>();
 
-		list.add("#" + BlockTags.COAL_ORES.location().toString());
+		list.add("#" + vanillaBlockTag("coal_ores").location().toString());
 		list.add("#" + BlockTags.COPPER_ORES.location().toString());
-		list.add("#" + BlockTags.DIAMOND_ORES.location().toString());
-		list.add("#" + BlockTags.EMERALD_ORES.location().toString());
+		list.add("#" + vanillaBlockTag("diamond_ores").location().toString());
+		list.add("#" + vanillaBlockTag("emerald_ores").location().toString());
 		list.add("#" + BlockTags.GOLD_ORES.location().toString());
 		list.add("#" + BlockTags.IRON_ORES.location().toString());
-		list.add("#" + BlockTags.LAPIS_ORES.location().toString());
-		list.add("#" + BlockTags.REDSTONE_ORES.location().toString());
+		list.add("#" + vanillaBlockTag("lapis_ores").location().toString());
+		list.add("#" + vanillaBlockTag("redstone_ores").location().toString());
 		list.add(BuiltInRegistries.BLOCK.getKey(Blocks.NETHER_QUARTZ_ORE).toString());
 
 		return list;

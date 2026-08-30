@@ -42,8 +42,18 @@ public abstract class MixinGameRenderer
         }
     }
 
+    @Inject(method = "renderLevel", at = @At("HEAD"))
+    private void tweakeroo_enable3dCrosshair(DeltaTracker deltaTracker, CallbackInfo ci)
+    {
+        if (FeatureToggle.TWEAK_F3_CURSOR.getBooleanValue())
+        {
+            // Vanilla renders the 3D crosshair from this render-state flag in 26.2
+            this.gameRenderState.levelRenderState.render3dCrosshair = true;
+        }
+    }
+
     @Inject(method = "update", at = @At(value = "HEAD"))
-    private void tweakeroo_overrideRenderViewEntityPre(DeltaTracker deltaTracker, boolean advanceGameTime, CallbackInfo ci)
+    private void tweakeroo_overrideRenderViewEntityPre(DeltaTracker deltaTracker, CallbackInfo ci)
     {
         if (FeatureToggle.TWEAK_ELYTRA_CAMERA.getBooleanValue() && Hotkeys.ELYTRA_CAMERA.getKeybind().isKeybindHeld())
         {
@@ -63,11 +73,6 @@ public abstract class MixinGameRenderer
     private void tweakeroo_onRenderLevelPost(DeltaTracker deltaTracker, CallbackInfo ci,
                                              @Local(name = "cameraState") CameraRenderState cameraState)
     {
-        if (FeatureToggle.TWEAK_F3_CURSOR.getBooleanValue())
-        {
-            this.minecraft.getDebugOverlay().render3dCrosshair(cameraState, this.gameRenderState.windowRenderState.guiScale);
-        }
-
         if (FeatureToggle.TWEAK_ELYTRA_CAMERA.getBooleanValue() && Hotkeys.ELYTRA_CAMERA.getKeybind().isKeybindHeld())
         {
             Entity entity = this.minecraft.getCameraEntity();

@@ -18,16 +18,7 @@ import fi.dy.masa.tweakeroo.config.Configs;
 public class MixinWeatherEffectRenderer
 {
     @Inject(method = "extractRenderState", at = @At("HEAD"), cancellable = true)
-    private void tweakeroo_cancelWeatherRender(Level level, int ticks, float partialTicks, Vec3 cameraPos, WeatherRenderState renderState, CallbackInfo ci)
-    {
-        if (Configs.Disable.DISABLE_RAIN_EFFECTS.getBooleanValue())
-        {
-            ci.cancel();
-        }
-    }
-
-    @Inject(method = "tickRainParticles", at = @At("HEAD"), cancellable = true)
-    private void tweakeroo_cancelParticlesAndSounds(ClientLevel world, Camera camera, int ticks, ParticleStatus particlesMode, int weatherRadius, CallbackInfo ci)
+    private void tweakeroo_cancelWeatherRender(ClientLevel level, float partialTicks, Vec3 cameraPos, WeatherRenderState renderState, CallbackInfo ci)
     {
         if (Configs.Disable.DISABLE_RAIN_EFFECTS.getBooleanValue())
         {

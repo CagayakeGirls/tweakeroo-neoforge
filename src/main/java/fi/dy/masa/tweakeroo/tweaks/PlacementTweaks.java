@@ -9,6 +9,7 @@ import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.protocol.game.ServerboundMovePlayerPacket;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
@@ -45,6 +46,14 @@ import fi.dy.masa.tweakeroo.util.*;
 
 public class PlacementTweaks
 {
+    // 26.2 dropped the generic ItemTags.STAIRS/TRAPDOORS entries; match on the placed block instead
+    private static boolean isTrapdoorOrStairsItem(ItemStack stack)
+    {
+        return stack.getItem() instanceof BlockItem blockItem &&
+               (blockItem.getBlock().defaultBlockState().is(BlockTags.TRAPDOORS) ||
+                blockItem.getBlock().defaultBlockState().is(BlockTags.STAIRS));
+    }
+
     private static BlockPos posFirst = null;
     private static BlockPos posFirstBreaking = null;
     private static BlockPos posLast = null;
@@ -648,7 +657,7 @@ public class PlacementTweaks
                     protocolValue |= facing.get3DDataValue() << shiftBy;
                     shiftBy += 3;
 
-                    if (stack.is(ItemTags.TRAPDOORS) || stack.is(ItemTags.STAIRS))
+                    if (isTrapdoorOrStairsItem(stack))
                     {
                         // add BLOCK_HALF handling --> (BOTTOM)
                         int requiredBits = Mth.log2(Mth.smallestEncompassingPowerOfTwo(2));
@@ -892,7 +901,7 @@ public class PlacementTweaks
             protocolValue |= facing.get3DDataValue() << shiftBy;
             shiftBy += 3;
 
-            if (stackOriginal.is(ItemTags.TRAPDOORS) || stackOriginal.is(ItemTags.STAIRS))
+            if (isTrapdoorOrStairsItem(stackOriginal))
             {
                 // add BLOCK_HALF handling --> (BOTTOM)
                 int requiredBits = Mth.log2(Mth.smallestEncompassingPowerOfTwo(2));
