@@ -12,12 +12,11 @@ import org.spongepowered.asm.mixin.injection.Constant;
 import org.spongepowered.asm.mixin.injection.ModifyConstant;
 import org.spongepowered.asm.mixin.injection.Slice;
 
-import fi.dy.masa.malilib.compat.ModIds;
 import fi.dy.masa.tweakeroo.config.Configs;
 import fi.dy.masa.tweakeroo.config.FeatureToggle;
 
 @Mixin(value = ServerboundSetStructureBlockPacket.class, priority = 999)
-@Restriction(conflict = @Condition(value = ModIds.carpet))
+@Restriction(conflict = @Condition(value = "carpet"))
 public abstract class MixinServerboundSetStructureBlockPacket
 {
     @ModifyConstant(method = "<init>(Lnet/minecraft/network/FriendlyByteBuf;)V",

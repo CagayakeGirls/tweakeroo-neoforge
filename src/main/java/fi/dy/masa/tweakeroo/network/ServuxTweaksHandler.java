@@ -83,7 +83,7 @@ public abstract class ServuxTweaksHandler<T extends CustomPacketPayload> impleme
                     this.servuxRegistered = true;
                 }
             }
-            case PACKET_S2C_BLOCK_NBT_RESPONSE_SIMPLE -> EntityDataManager.getInstance().handleBlockEntityData(packet.getPos(), packet.getCompound(), null);
+            case PACKET_S2C_BLOCK_NBT_RESPONSE_SIMPLE -> EntityDataManager.getInstance().handleBlockEntityData(packet.getPos(), packet.getCompound());
             case PACKET_S2C_ENTITY_NBT_RESPONSE_SIMPLE -> EntityDataManager.getInstance().handleEntityData(packet.getEntityId(), packet.getCompound());
             case PACKET_S2C_NBT_RESPONSE_DATA ->
             {

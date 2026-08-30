@@ -236,8 +236,7 @@ public class MiscUtils
                 lastZoomValue.setActionHandled();
             }
 
-            // Refresh the rendered chunks when exiting zoom mode
-            Minecraft.getInstance().levelRenderer.needsUpdate();
+            // No chunk-refresh call needed on 26.2; fog/fov render state is re-extracted per frame.
 
             zoomActive = false;
         }
@@ -285,8 +284,7 @@ public class MiscUtils
                 lastSpyglassValue.setActionHandled();
             }
 
-            // Refresh the rendered chunks when exiting zoom mode
-            Minecraft.getInstance().levelRenderer.needsUpdate();
+            // No chunk-refresh call needed on 26.2; fog/fov render state is re-extracted per frame.
 
             spyglassZoomActive = false;
         }
@@ -479,7 +477,7 @@ public class MiscUtils
         style = style.withClickEvent(new ClickEvent.SuggestCommand(coords));
         style = style.withHoverEvent(new HoverEvent.ShowText(Component.literal(coords)));
         message.setStyle(style);
-        mc.gui.getChat().addClientSystemMessage(message);
+        mc.gui.hud.getChat().addClientSystemMessage(message);
         Tweakeroo.LOGGER.info(str);
     }
 

@@ -14,11 +14,11 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 @Mixin(BlockEntityRenderDispatcher.class)
 public abstract class MixinBlockEntityRenderDispatcher
 {
-    @Inject(method = "tryExtractRenderState(Lnet/minecraft/world/level/block/entity/BlockEntity;FLnet/minecraft/client/renderer/feature/ModelFeatureRenderer$CrumblingOverlay;)Lnet/minecraft/client/renderer/blockentity/state/BlockEntityRenderState;",
+    @Inject(method = "tryExtractRenderState(Lnet/minecraft/world/level/block/entity/BlockEntity;FLnet/minecraft/client/renderer/feature/ModelFeatureRenderer$CrumblingOverlay;Z)Lnet/minecraft/client/renderer/blockentity/state/BlockEntityRenderState;",
 			at = @At("HEAD"), cancellable = true)
     private <E extends BlockEntity, S extends BlockEntityRenderState> void tweakeroo_preventTileEntityRendering(
 			E blockEntity, float f,
-			ModelFeatureRenderer.CrumblingOverlay crumblingOverlay,
+			ModelFeatureRenderer.CrumblingOverlay crumblingOverlay, boolean bl,
 			CallbackInfoReturnable<S> cir)
     {
         if (Configs.Disable.DISABLE_TILE_ENTITY_RENDERING.getBooleanValue())

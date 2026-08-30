@@ -27,7 +27,7 @@ public abstract class MixinItemInHandRenderer
         return Configs.Disable.DISABLE_ITEM_SWITCH_COOLDOWN.getBooleanValue() ? 1.0F : original.call(instance, v);
     }
 
-    @Inject(method = "renderArmWithItem", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "submitArmWithItem", at = @At("HEAD"), cancellable = true)
     private void tweakeroo_preventOffhandRendering(AbstractClientPlayer player,
                                                    float tickProgress, float pitch,
 												   InteractionHand hand,

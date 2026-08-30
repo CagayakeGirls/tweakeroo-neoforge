@@ -22,6 +22,7 @@ import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.EquipmentSlotGroup;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -1242,7 +1243,7 @@ public class InventoryUtils
         if (player == null || GuiUtils.getCurrentScreen() != null) { return; }
         AbstractContainerMenu container = player.containerMenu;
         @SuppressWarnings("deprecation")
-        Predicate<ItemStack> filter = (s) -> s.getItem().equals(Items.ELYTRA) && s.get(DataComponents.EQUIPPABLE).canBeEquippedBy(EntityType.PLAYER.builtInRegistryHolder()) && s.getDamageValue() < s.getMaxDamage() - 10;
+        Predicate<ItemStack> filter = (s) -> s.getItem().equals(Items.ELYTRA) && s.get(DataComponents.EQUIPPABLE).canBeEquippedBy(EntityTypes.PLAYER.builtInRegistryHolder()) && s.getDamageValue() < s.getMaxDamage() - 10;
 
         int targetSlot = findSlotWithBestItemMatch(container, (testedStack, previousBestMatch) ->
         {

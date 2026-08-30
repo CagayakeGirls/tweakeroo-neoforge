@@ -8,7 +8,6 @@ import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.Options;
-import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.multiplayer.MultiPlayerGameMode;
 import net.minecraft.client.player.LocalPlayer;
@@ -34,7 +33,6 @@ public abstract class MixinMinecraft implements IMinecraftClientInvoker
 {
     @Shadow @Nullable public LocalPlayer player;
     @Shadow @Nullable public ClientLevel level;
-    @Shadow @Nullable public Screen screen;
     @Shadow @Final public Options options;
     @Shadow private int rightClickDelay;
     @Shadow protected int missTime;
@@ -128,7 +126,7 @@ public abstract class MixinMinecraft implements IMinecraftClientInvoker
     @Inject(method = "handleKeybinds", at = @At("HEAD"))
     private void tweakeroo_onProcessKeybindsPre(CallbackInfo ci)
     {
-        if (this.screen == null)
+        if (((Minecraft) (Object) this).gui.screen() == null)
         {
             if (FeatureToggle.TWEAK_HOLD_ATTACK.getBooleanValue())
             {

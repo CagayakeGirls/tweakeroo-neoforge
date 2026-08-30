@@ -106,7 +106,7 @@ public abstract class MixinClientPacketListener extends ClientCommonPacketListen
     }
 
     @Inject(method = "handleCommands", at = @At("RETURN"))
-    private void tweakeroo_onCommandTree(CallbackInfo ci)
+    private void tweakeroo_onCommandTree(ClientboundCommandsPacket packet, CallbackInfo ci)
     {
         if (Configs.Generic.ENTITY_DATA_SYNC_BACKUP.getBooleanValue())
         {

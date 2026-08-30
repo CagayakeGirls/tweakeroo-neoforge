@@ -8,6 +8,8 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import net.minecraft.world.phys.Vec3;
+
 import fi.dy.masa.tweakeroo.config.Configs;
 import fi.dy.masa.tweakeroo.config.FeatureToggle;
 import fi.dy.masa.tweakeroo.tweaks.MiscTweaks;
@@ -144,7 +146,7 @@ public abstract class MixinMultiPlayerGameMode
 			this.minecraft.level != null && this.minecraft.player != null)
         {
             if (this.minecraft.level.getBlockState(targetPos).isAir()) {
-                BlockHitResult blockHitResult = new BlockHitResult(targetPos.getCenter(), side, targetPos, false);
+                BlockHitResult blockHitResult = new BlockHitResult(Vec3.atCenterOf(targetPos), side, targetPos, false);
                 for (InteractionHand hand : InteractionHand.values())
                 {
                     ItemStack stack = this.minecraft.player.getItemInHand(hand);
@@ -174,7 +176,7 @@ public abstract class MixinMultiPlayerGameMode
 			this.minecraft.level != null && this.minecraft.player != null)
         {
             if (this.minecraft.level.getBlockState(targetPos).isAir()) {
-                BlockHitResult blockHitResult = new BlockHitResult(targetPos.getCenter(), side, targetPos, false);
+                BlockHitResult blockHitResult = new BlockHitResult(Vec3.atCenterOf(targetPos), side, targetPos, false);
                 for (InteractionHand hand : InteractionHand.values())
                 {
                     ItemStack stack = this.minecraft.player.getItemInHand(hand);

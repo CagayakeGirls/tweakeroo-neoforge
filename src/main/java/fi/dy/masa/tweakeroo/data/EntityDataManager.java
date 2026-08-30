@@ -43,9 +43,10 @@ import fi.dy.masa.malilib.interfaces.IDataSyncer;
 import fi.dy.masa.malilib.mixin.entity.IMixinAbstractHorseEntity;
 import fi.dy.masa.malilib.mixin.entity.IMixinAbstractNautilus;
 import fi.dy.masa.malilib.mixin.entity.IMixinPiglinEntity;
-import fi.dy.masa.malilib.mixin.network.IMixinDataQueryHandler;
+import fi.dy.masa.malilib.mixin.network.IMixinDebugQueryHandler;
 import fi.dy.masa.malilib.network.ClientPlayHandler;
 import fi.dy.masa.malilib.network.IPluginClientPlayHandler;
+import fi.dy.masa.malilib.registry.Registry;
 import fi.dy.masa.malilib.util.InventoryUtils;
 import fi.dy.masa.malilib.util.MathUtils;
 import fi.dy.masa.malilib.util.WorldUtils;
@@ -53,6 +54,8 @@ import fi.dy.masa.malilib.util.data.Constants;
 import fi.dy.masa.malilib.util.data.DataEntityUtils;
 import fi.dy.masa.malilib.util.data.tag.CompoundData;
 import fi.dy.masa.malilib.util.data.tag.converter.DataConverterNbt;
+import fi.dy.masa.malilib.util.data_syncer.EntityDataCache;
+import fi.dy.masa.malilib.util.data_syncer.EntityDataRequestTracker;
 import fi.dy.masa.malilib.util.nbt.NbtKeys;
 import fi.dy.masa.malilib.util.nbt.NbtView;
 import fi.dy.masa.tweakeroo.Reference;
@@ -93,8 +96,9 @@ public class EntityDataManager implements IClientTickHandler, IDataSyncer
 
     private boolean sentBackupPackets = false;
     private boolean receivedBackupPackets = false;
+    private final EntityDataCache cache;
+    private final EntityDataRequestTracker requestTracker;
 
-    @Override
     @Nullable
     public Level getWorld()
     {
@@ -112,9 +116,48 @@ public class EntityDataManager implements IClientTickHandler, IDataSyncer
         return this.clientWorld;
     }
 
+    @Override
+    public EntityDataCache getCache()
+    {
+        return this.cache;
+    }
+
+    @Override
+    public EntityDataRequestTracker getRequestTracker()
+    {
+        return this.requestTracker;
+    }
+
+    @Override
+    public boolean isEnabled()
+    {
+        return Configs.Generic.ENTITY_DATA_SYNC.getBooleanValue();
+    }
+
+    @Override
+    public boolean isBackupEnabled()
+    {
+        return Configs.Generic.ENTITY_DATA_SYNC_BACKUP.getBooleanValue();
+    }
+
+    @Override
+    public boolean loadContainerBlockEntities()
+    {
+        return true;
+    }
+
+    @Override
+    public long getRefreshTime()
+    {
+        return this.getCacheRefresh();
+    }
+
     public EntityDataManager()
     {
         this.mc = Minecraft.getInstance();
+        this.cache = new EntityDataCache(Reference.MOD_ID, this.getCacheTimeout());
+        this.requestTracker = new EntityDataRequestTracker();
+        Registry.ENTITY_DATA_REGISTRY.registerEntityDataCache(this.cache);
     }
 
     @Override
@@ -289,7 +332,8 @@ public class EntityDataManager implements IClientTickHandler, IDataSyncer
         return MathUtils.min(result, clamp);
     }
 
-    private long getCacheTimeout()
+    @Override
+    public long getCacheTimeout()
     {
         // Increase cache timeout when in Backup Mode.
         int modifier = Configs.Generic.ENTITY_DATA_SYNC_BACKUP.getBooleanValue() ? 5 : 1;
@@ -619,7 +663,8 @@ public class EntityDataManager implements IClientTickHandler, IDataSyncer
         return null;
     }
 
-    private @Nullable Pair<BlockEntity, CompoundData> refreshBlockEntityFromWorld(Level world, BlockPos pos)
+    @Override
+    public @Nullable Pair<BlockEntity, CompoundData> refreshBlockEntityFromWorld(Level world, BlockPos pos)
     {
         if (world != null && world.getBlockState(pos).hasBlockEntity())
         {
@@ -690,7 +735,8 @@ public class EntityDataManager implements IClientTickHandler, IDataSyncer
         return this.refreshEntityFromWorld(this.getClientWorld(), entityId);
     }
 
-    private @Nullable Pair<Entity, CompoundData> refreshEntityFromWorld(Level world, int entityId)
+    @Override
+    public @Nullable Pair<Entity, CompoundData> refreshEntityFromWorld(Level world, int entityId)
     {
         if (world != null)
         {
@@ -871,8 +917,8 @@ public class EntityDataManager implements IClientTickHandler, IDataSyncer
         if (handler != null)
         {
             this.sentBackupPackets = true;
-            handler.getDebugQueryHandler().queryBlockEntityTag(pos, nbtCompound -> handleBlockEntityData(pos, nbtCompound, null));
-            this.transactionToBlockPosOrEntityId.put(((IMixinDataQueryHandler) handler.getDebugQueryHandler()).malilib_currentTransactionId(), Either.left(pos));
+            handler.getDebugQueryHandler().queryBlockEntityTag(pos, nbtCompound -> handleBlockEntityData(pos, nbtCompound));
+            this.transactionToBlockPosOrEntityId.put(((IMixinDebugQueryHandler) handler.getDebugQueryHandler()).malilib_currentTransactionId(), Either.left(pos));
         }
     }
 
@@ -889,7 +935,7 @@ public class EntityDataManager implements IClientTickHandler, IDataSyncer
         {
             this.sentBackupPackets = true;
             handler.getDebugQueryHandler().queryEntityTag(entityId, nbtCompound -> handleEntityData(entityId, nbtCompound));
-            this.transactionToBlockPosOrEntityId.put(((IMixinDataQueryHandler) handler.getDebugQueryHandler()).malilib_currentTransactionId(), Either.right(entityId));
+            this.transactionToBlockPosOrEntityId.put(((IMixinDebugQueryHandler) handler.getDebugQueryHandler()).malilib_currentTransactionId(), Either.right(entityId));
         }
     }
 
@@ -910,9 +956,9 @@ public class EntityDataManager implements IClientTickHandler, IDataSyncer
     }
 
     @Override
-    public BlockEntity handleBlockEntityData(BlockPos pos, CompoundTag nbt, @Nullable Identifier type)
+    public BlockEntity handleBlockEntityData(BlockPos pos, CompoundTag nbt)
     {
-        return this.handleBlockEntityData(pos, DataConverterNbt.fromVanillaCompound(nbt), type);
+        return this.handleBlockEntityData(pos, DataConverterNbt.fromVanillaCompound(nbt));
     }
 
     @Override
@@ -923,14 +969,14 @@ public class EntityDataManager implements IClientTickHandler, IDataSyncer
 
     @Nullable
     @Override
-    public BlockEntity handleBlockEntityData(BlockPos pos, CompoundData data, @javax.annotation.Nullable Identifier type)
+    public BlockEntity handleBlockEntityData(BlockPos pos, CompoundData data)
     {
         this.pendingBlockEntitiesQueue.remove(pos);
         if (data == null || this.getClientWorld() == null) return null;
 
         BlockEntity blockEntity = this.getClientWorld().getBlockEntity(pos);
 
-        if (blockEntity != null && (type == null || type.equals(BuiltInRegistries.BLOCK_ENTITY_TYPE.getKey(blockEntity.getType()))))
+        if (blockEntity != null)
         {
             if (!data.contains(NbtKeys.ID, Constants.NBT.TAG_STRING))
             {
@@ -953,44 +999,6 @@ public class EntityDataManager implements IClientTickHandler, IDataSyncer
             }
 
             return blockEntity;
-        }
-
-        if (type == null) { return null; }
-        Optional<Holder.Reference<BlockEntityType<?>>> opt = BuiltInRegistries.BLOCK_ENTITY_TYPE.get(type);
-
-        if (opt.isPresent())
-        {
-            BlockEntityType<?> beType = opt.get().value();
-
-            if (beType.isValid(this.getClientWorld().getBlockState(pos)))
-            {
-                BlockEntity blockEntity2 = beType.create(pos, this.getClientWorld().getBlockState(pos));
-
-                if (blockEntity2 != null)
-                {
-                    if (!data.contains(NbtKeys.ID, Constants.NBT.TAG_STRING))
-                    {
-                        Identifier id = BuiltInRegistries.BLOCK_ENTITY_TYPE.getKey(beType);
-
-                        if (id != null)
-                        {
-                            data.putString(NbtKeys.ID, id.toString());
-                        }
-                    }
-                    synchronized (this.blockEntityCache)
-                    {
-                        this.blockEntityCache.put(pos, Pair.of(System.currentTimeMillis(), Pair.of(blockEntity2, data)));
-                    }
-
-//                    if (Configs.Generic.ENTITY_DATA_LOAD_NBT.getBooleanValue())
-//                    {
-//                        blockEntity2.read(nbt, this.getClientWorld().getRegistryManager());
-//                        this.getClientWorld().addBlockEntity(blockEntity2);
-//                    }
-
-                    return blockEntity2;
-                }
-            }
         }
 
         return null;
@@ -1063,7 +1071,7 @@ public class EntityDataManager implements IClientTickHandler, IDataSyncer
         if (either != null)
         {
             this.receivedBackupPackets = true;
-            either.ifLeft(pos -> handleBlockEntityData(pos, nbt, null))
+            either.ifLeft(pos -> handleBlockEntityData(pos, nbt))
                   .ifRight(entityId -> handleEntityData(entityId, nbt));
         }
     }

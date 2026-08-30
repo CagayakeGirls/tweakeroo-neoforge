@@ -2,7 +2,7 @@ package fi.dy.masa.tweakeroo.mixin.hud;
 
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.Gui;
+import net.minecraft.client.gui.Hud;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.PlayerTabOverlay;
 import net.minecraft.world.scores.DisplaySlot;
@@ -18,7 +18,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import fi.dy.masa.tweakeroo.config.Configs;
 import fi.dy.masa.tweakeroo.config.FeatureToggle;
 
-@Mixin(value = Gui.class, priority = 1005)
+@Mixin(value = Hud.class, priority = 1005)
 public abstract class MixinGui
 {
     @Shadow @Final private PlayerTabOverlay tabList;
