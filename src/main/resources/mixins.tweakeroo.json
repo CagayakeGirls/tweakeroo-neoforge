@@ -42,6 +42,7 @@
         "item.MixinItem",
         "item.MixinItemStack",
         "item.MixinSpyglassItem",
+        "network.MixinServerboundSetStructureBlockPacket",
         "world.IMixinLightEngine",
         "world.MixinChunkMap",
         "world.MixinLevel",
