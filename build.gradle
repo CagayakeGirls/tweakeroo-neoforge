@@ -153,6 +153,16 @@ publishing {
 		maven {
 			url = "$projectDir/../../CommonMaven"
 		}
+
+		maven {
+			name = "KTTMaven"
+			url = "https://maven.kessokuteatime.work/releases"
+
+			credentials {
+				username = System.getenv("KTT_MAVEN_USERNAME")
+				password = System.getenv("KTT_MAVEN_TOKEN")
+			}
+		}
 	}
 }
 
