@@ -6,8 +6,8 @@ import net.minecraft.client.multiplayer.ClientPacketListener;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.Identifier;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
+//import net.fabricmc.api.EnvType;
+//import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 
 import fi.dy.masa.malilib.network.IClientPayloadData;
@@ -15,7 +15,7 @@ import fi.dy.masa.malilib.network.IPluginClientPlayHandler;
 import fi.dy.masa.tweakeroo.Tweakeroo;
 import fi.dy.masa.tweakeroo.data.EntityDataManager;
 
-@Environment(EnvType.CLIENT)
+//@Environment(EnvType.CLIENT)
 public abstract class ServuxTweaksHandler<T extends CustomPacketPayload> implements IPluginClientPlayHandler<T>
 {
 	private static final ServuxTweaksHandler<ServuxTweaksPacket.Payload> INSTANCE = new ServuxTweaksHandler<>()
