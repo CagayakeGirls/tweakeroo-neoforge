@@ -3,18 +3,15 @@ package fi.dy.masa.tweakeroo;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import net.fabricmc.api.ModInitializer;
-
 import fi.dy.masa.malilib.event.InitializationHandler;
 import fi.dy.masa.malilib.util.log.AnsiLogger;
 import fi.dy.masa.tweakeroo.config.Configs;
 
-public class Tweakeroo implements ModInitializer
+public class Tweakeroo
 {
     public static final Logger LOGGER = LogManager.getLogger(Reference.MOD_ID);
     private static final AnsiLogger ANSI_LOGGER = new AnsiLogger(Tweakeroo.class, true, true);
 
-    @Override
     public void onInitialize()
     {
         InitializationHandler.getInstance().registerInitializationHandler(new InitHandler());
