@@ -13,7 +13,7 @@ platformId-curseforge = "915857"
 platformId-modrinth = "yke6wdGF"
 
 architectury-loom = "1.17-SNAPSHOT"
-modpublisher = "2.+"
+modpublisher = "2.2.4"
 
 [plugins]
 architectury-loom = { id = "dev.architectury.loom-no-remap", version.ref = "architectury-loom" }
