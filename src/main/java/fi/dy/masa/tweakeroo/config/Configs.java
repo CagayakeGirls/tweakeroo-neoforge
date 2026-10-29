@@ -75,7 +75,7 @@ public class Configs implements IConfigHandler
 	    public static final ConfigBooleanHotkeyed   ENTITY_DATA_SYNC                    = new ConfigBooleanHotkeyed ("entityDataSync", false, "").apply(GENERIC_KEY);
 	    public static final ConfigBooleanHotkeyed   ENTITY_DATA_SYNC_BACKUP             = new ConfigBooleanHotkeyed ("entityDataSyncBackup", false, "").apply(GENERIC_KEY);
 	    public static final ConfigFloat             ENTITY_DATA_SYNC_CACHE_REFRESH      = new ConfigFloat       ("entityDataSyncCacheRefresh", 0.25f, 0.05f, 1.0f).apply(GENERIC_KEY);
-	    public static final ConfigFloat             ENTITY_DATA_SYNC_CACHE_TIMEOUT      = new ConfigFloat       ("entityDataSyncCacheTimeout", 2.75f, 1.0f, 25.0f).apply(GENERIC_KEY);
+	    public static final ConfigFloat             ENTITY_DATA_SYNC_CACHE_TIMEOUT      = new ConfigFloat       ("entityDataSyncCacheTimeout", 2.75f, 1.0f, 30.0f).apply(GENERIC_KEY);
         public static final ConfigDouble        	ENTITY_REACH_DISTANCE               = new ConfigDouble      ("entityReachDistance", 3.0, 1, 64).apply(GENERIC_KEY);
         public static final ConfigOptionList    	ENTITY_TYPE_ATTACK_RESTRICTION_WARN = new ConfigOptionList  ("entityTypeAttackRestrictionWarn", MessageOutputType.MESSAGE).apply(GENERIC_KEY);
         public static final ConfigInteger       	FAST_BLOCK_PLACEMENT_COUNT          = new ConfigInteger     ("fastBlockPlacementCount", 2, 1, 16).apply(GENERIC_KEY);
@@ -139,9 +139,9 @@ public class Configs implements IConfigHandler
         public static final ConfigBoolean       	SELECTIVE_BLOCKS_HIDE_PARTICLES     = new ConfigBoolean     ("selectiveBlocksHideParticles", true).apply(GENERIC_KEY);
         public static final ConfigBoolean       	SELECTIVE_BLOCKS_HIDE_ENTITIES      = new ConfigBoolean     ("selectiveBlocksHideEntities", false).apply(GENERIC_KEY);
         public static final ConfigBoolean       	SELECTIVE_BLOCKS_NO_HIT             = new ConfigBoolean     ("selectiveBlocksNoHit", true).apply(GENERIC_KEY);
-	    public static final ConfigInteger       	SERVER_NBT_REQUEST_RATE             = new ConfigInteger     ("serverNbtRequestRate", 2).apply(GENERIC_KEY);
+	    public static final ConfigInteger       	SERVER_NBT_REQUEST_RATE             = new ConfigInteger     ("serverNbtRequestRate", 2, 1, 8).apply(GENERIC_KEY);
 		public static final ConfigBoolean       	SHULKER_DISPLAY_BACKGROUND_COLOR    = new ConfigBoolean     ("shulkerDisplayBgColor", true).apply(GENERIC_KEY);
-        public static final ConfigBoolean       	SHULKER_DISPLAY_ENDER_CHEST         = new ConfigBoolean     ("shulkerDisplayEnderChest", false).apply(GENERIC_KEY);
+        public static final ConfigBooleanClient    	SHULKER_DISPLAY_ENDER_CHEST         = new ConfigBooleanClient("shulkerDisplayEnderChest", false, "", true).apply(GENERIC_KEY);
         public static final ConfigBoolean       	SHULKER_DISPLAY_REQUIRE_SHIFT       = new ConfigBoolean     ("shulkerDisplayRequireShift", true).apply(GENERIC_KEY);
         public static final ConfigBoolean       	SLOT_SYNC_WORKAROUND                = new ConfigBoolean     ("slotSyncWorkaround", true).apply(GENERIC_KEY);
         public static final ConfigBoolean       	SLOT_SYNC_WORKAROUND_ALWAYS         = new ConfigBoolean     ("slotSyncWorkaroundAlways", false).apply(GENERIC_KEY);
@@ -174,10 +174,12 @@ public class Configs implements IConfigHandler
         public static final ConfigOptionList    	UTILITY_HAND_SLOT                   = new ConfigOptionList  ("utilityHandSlot", HandSlot.MAIN_HAND).apply(GENERIC_KEY);
         public static final ConfigBooleanHotkeyed	WEAPON_SWAP_BETTER_ENCHANTS			= new ConfigBooleanHotkeyed ("weaponSwapBetterEnchants", true, "").apply(GENERIC_KEY);
         public static final ConfigBoolean			ZOOM_ADJUST_MOUSE_SENSITIVITY       = new ConfigBoolean     ("zoomAdjustMouseSensitivity", true).apply(GENERIC_KEY);
-        public static final ConfigDouble			ZOOM_FOV                            = new ConfigDouble      ("zoomFov", 30, 0.01, 359.99).apply(GENERIC_KEY);
+        public static final ConfigDouble			ZOOM_FOV                            = new ConfigDouble      ("zoomFov", 30, 0.01, 358.7).apply(GENERIC_KEY);
         public static final ConfigDouble			ZOOM_FOV_DIFFERENCE                 = new ConfigDouble      ("zoomFovDifference", 1, 0.01, 359.99).apply(GENERIC_KEY);
         public static final ConfigDouble            ZOOM_FOV_DIFFERENCE_CTRL            = new ConfigDouble      ("zoomFovDifferenceCtrl", 5, 0, 359.99).apply(GENERIC_KEY);
         public static final ConfigBoolean			ZOOM_RESET_FOV_ON_ACTIVATE          = new ConfigBoolean     ("zoomResetFovOnActivate", true).apply(GENERIC_KEY);
+        public static final ConfigDouble			ZOOM_MINIMUM_FOV                    = new ConfigDouble      ("zoomMinimumFov", 0, 0, 360).apply(GENERIC_KEY);
+        public static final ConfigDouble            ZOOM_MAXIMUM_FOV                    = new ConfigDouble      ("zoomMaximumFov", 360, 0, 360).apply(GENERIC_KEY);
 
         public static final ImmutableList<@NotNull IConfigBase> OPTIONS = ImmutableList.of(
                 ACCURATE_PLACEMENT_PROTOCOL_MODE,
@@ -309,7 +311,9 @@ public class Configs implements IConfigHandler
                 ZOOM_FOV,
                 ZOOM_FOV_DIFFERENCE,
                 ZOOM_FOV_DIFFERENCE_CTRL,
-                ZOOM_RESET_FOV_ON_ACTIVATE
+                ZOOM_RESET_FOV_ON_ACTIVATE,
+                ZOOM_MINIMUM_FOV,
+                ZOOM_MAXIMUM_FOV
         );
 
         public static final ImmutableList<@NotNull IHotkey> HOTKEYS = ImmutableList.of(
@@ -425,7 +429,7 @@ public class Configs implements IConfigHandler
         public static final ConfigBooleanHotkeyed       DISABLE_ARMOR_STAND_RENDERING   = new ConfigBooleanHotkeyed("disableArmorStandRendering",           false, "").apply(DISABLE_KEY);
         public static final ConfigBooleanHotkeyed       DISABLE_ATMOSPHERIC_FOG         = new ConfigBooleanHotkeyed("disableAtmosphericFog",                false, "").apply(DISABLE_KEY);
         public static final ConfigBooleanHotkeyed       DISABLE_AXE_STRIPPING           = new ConfigBooleanHotkeyed("disableAxeStripping",                  false, "").apply(DISABLE_KEY);
-        public static final ConfigBooleanHotkeyed       DISABLE_BAT_SPAWNING            = new ConfigBooleanClient  ("disableBatSpawning",                   false, "").apply(DISABLE_KEY);
+        public static final ConfigBooleanHotkeyed       DISABLE_BAT_SPAWNING            = new ConfigBooleanClient  ("disableBatSpawning",                   false, "", false).apply(DISABLE_KEY);
         public static final ConfigBooleanHotkeyed       DISABLE_BEACON_BEAM_RENDERING   = new ConfigBooleanHotkeyed("disableBeaconBeamRendering",           false, "").apply(DISABLE_KEY);
         public static final ConfigBooleanHotkeyed       DISABLE_BLOCK_BREAK_PARTICLES   = new ConfigBooleanHotkeyed("disableBlockBreakingParticles",        false, "").apply(DISABLE_KEY);
         public static final ConfigBooleanHotkeyed       DISABLE_BLOCK_BREAK_COOLDOWN    = new ConfigBooleanHotkeyed("disableBlockBreakCooldown",            false, "").apply(DISABLE_KEY);
@@ -441,7 +445,7 @@ public class Configs implements IConfigHandler
         public static final ConfigBooleanHotkeyed       DISABLE_DEAD_MOB_RENDERING      = new ConfigBooleanHotkeyed("disableDeadMobRendering",              false, "").apply(DISABLE_KEY);
         public static final ConfigBooleanHotkeyed       DISABLE_DEAD_MOB_TARGETING      = new ConfigBooleanHotkeyed("disableDeadMobTargeting",              false, "").apply(DISABLE_KEY);
         public static final ConfigBooleanHotkeyed       DISABLE_ENTITY_RENDERING        = new ConfigBooleanHotkeyed("disableEntityRendering",               false, "").apply(DISABLE_KEY);
-        public static final ConfigBooleanHotkeyed       DISABLE_ENTITY_TICKING          = new ConfigBooleanClient  ("disableEntityTicking",                 false, "").apply(DISABLE_KEY);
+        public static final ConfigBooleanHotkeyed       DISABLE_ENTITY_TICKING          = new ConfigBooleanClient  ("disableEntityTicking",                 false, "", false).apply(DISABLE_KEY);
         public static final ConfigBooleanHotkeyed       DISABLE_FALLING_BLOCK_RENDER    = new ConfigBooleanHotkeyed("disableFallingBlockEntityRendering",   false, "").apply(DISABLE_KEY);
         public static final ConfigBooleanHotkeyed       DISABLE_FIRE_OVERLAY            = new ConfigBooleanHotkeyed("disableFireOverlay",                   false, "").apply(DISABLE_KEY);
         public static final ConfigBooleanHotkeyed       DISABLE_FP_EFFECT_PARTICLES     = new ConfigBooleanHotkeyed("disableFirstPersonEffectParticles",    false, "").apply(DISABLE_KEY);
@@ -452,7 +456,7 @@ public class Configs implements IConfigHandler
         public static final ConfigBooleanHotkeyed       DISABLE_NAUSEA_EFFECT           = new ConfigBooleanHotkeyed("disableNauseaEffect",                  false, "").apply(DISABLE_KEY);
 //        public static final ConfigBooleanHotkeyed       DISABLE_NETHER_FOG              = new ConfigBooleanHotkeyed("disableNetherFog",                     false, "").apply(DISABLE_KEY);
         public static final ConfigBooleanHotkeyed       DISABLE_NETHER_PORTAL_SOUND     = new ConfigBooleanHotkeyed("disableNetherPortalSound",             false, "").apply(DISABLE_KEY);
-        public static final ConfigBooleanHotkeyed       DISABLE_OBSERVER                = new ConfigBooleanClient  ("disableObserver",                      false, "").apply(DISABLE_KEY);
+        public static final ConfigBooleanHotkeyed       DISABLE_OBSERVER                = new ConfigBooleanClient  ("disableObserver",                      false, "", false).apply(DISABLE_KEY);
         public static final ConfigBooleanHotkeyed       DISABLE_OFFHAND_RENDERING       = new ConfigBooleanHotkeyed("disableOffhandRendering",              false, "").apply(DISABLE_KEY);
         public static final ConfigBooleanHotkeyed       DISABLE_PARTICLES               = new ConfigBooleanHotkeyed("disableParticles",                     false, "").apply(DISABLE_KEY);
         public static final ConfigBooleanHotkeyed       DISABLE_PORTAL_GUI_CLOSING      = new ConfigBooleanHotkeyed("disablePortalGuiClosing",              false, "").apply(DISABLE_KEY);
@@ -468,8 +472,8 @@ public class Configs implements IConfigHandler
         public static final ConfigBooleanHotkeyed       DISABLE_STATUS_EFFECT_HUD       = new ConfigBooleanHotkeyed("disableStatusEffectHud",               false, "").apply(DISABLE_KEY);
         public static final ConfigBooleanHotkeyed       DISABLE_TICKRATE_PLAYER_SLOWDOWN= new ConfigBooleanHotkeyed("disableTickRatePlayerSlowdown",        false, "").apply(DISABLE_KEY);
         public static final ConfigBooleanHotkeyed       DISABLE_TILE_ENTITY_RENDERING   = new ConfigBooleanHotkeyed("disableTileEntityRendering",           false, "").apply(DISABLE_KEY);
-        public static final ConfigBooleanHotkeyed       DISABLE_TILE_ENTITY_TICKING     = new ConfigBooleanClient  ("disableTileEntityTicking",             false, "").apply(DISABLE_KEY);
-        public static final ConfigBooleanHotkeyed       DISABLE_VILLAGER_TRADE_LOCKING  = new ConfigBooleanClient  ("disableVillagerTradeLocking",          false, "").apply(DISABLE_KEY);
+        public static final ConfigBooleanHotkeyed       DISABLE_TILE_ENTITY_TICKING     = new ConfigBooleanClient  ("disableTileEntityTicking",             false, "", false).apply(DISABLE_KEY);
+        public static final ConfigBooleanHotkeyed       DISABLE_VILLAGER_TRADE_LOCKING  = new ConfigBooleanClient  ("disableVillagerTradeLocking",          false, "", false).apply(DISABLE_KEY);
         public static final ConfigBooleanHotkeyed       DISABLE_WALL_UNSPRINT           = new ConfigBooleanHotkeyed("disableWallUnsprint",                  false, "").apply(DISABLE_KEY);
         public static final ConfigBooleanHotkeyed       DISABLE_WORLD_VIEW_BOB          = new ConfigBooleanModConflict("disableWorldViewBob",               false, "", ModIds.iris).apply(DISABLE_KEY);
 
