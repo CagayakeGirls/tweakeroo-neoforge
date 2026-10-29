@@ -1,2 +1,2 @@
 ## Changelog
-- update NeoForge 26.2
+- fix publish issue
