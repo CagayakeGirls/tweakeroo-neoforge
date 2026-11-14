@@ -177,7 +177,10 @@ publisher {
 	setLoaders(loom.platform.get().id())
 	setCurseEnvironment("${libs.versions.version.env.get()}")
 	setArtifact(jar)
-	addAdditionalFile(sourcesJar)
+	addAdditionalFile {
+		artifact sourcesJar
+		fileType "sources-jar"
+	}
 	curseDepends.required("mafglib")
 	modrinthDepends.required("mafglib")
 }
