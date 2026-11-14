@@ -2,6 +2,8 @@ package fi.dy.masa.tweakeroo.config;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.List;
+import java.util.Optional;
 import com.google.common.collect.ImmutableList;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -9,10 +11,16 @@ import org.jetbrains.annotations.NotNull;
 
 import net.minecraft.client.Minecraft;
 
+import fi.dy.masa.malilib.compat.ModIds;
 import fi.dy.masa.malilib.config.*;
 import fi.dy.masa.malilib.config.options.*;
 import fi.dy.masa.malilib.hotkeys.IHotkey;
+import fi.dy.masa.malilib.registry.Registry;
 import fi.dy.masa.malilib.util.*;
+import fi.dy.masa.malilib.util.i18n.i18nConfig;
+import fi.dy.masa.malilib.util.i18n.i18nManager;
+import fi.dy.masa.malilib.util.i18n.i18nMode;
+import fi.dy.masa.malilib.util.i18n.i18nOption;
 import fi.dy.masa.malilib.util.restrictions.UsageRestriction.ListType;
 import fi.dy.masa.tweakeroo.Reference;
 import fi.dy.masa.tweakeroo.Tweakeroo;
@@ -28,6 +36,7 @@ import fi.dy.masa.tweakeroo.util.SnapAimMode;
 public class Configs implements IConfigHandler
 {
     private static final String CONFIG_FILE_NAME = Reference.MOD_ID + ".json";
+    public static final Optional<i18nManager> LANG = Optional.ofNullable(i18nManager.create(Reference.MOD_ID));
 
     private static final String GENERIC_KEY = Reference.MOD_ID+".config.generic";
     private static final String FIXES_KEY = Reference.MOD_ID+".config.fixes";
@@ -61,7 +70,7 @@ public class Configs implements IConfigHandler
 	    public static final ConfigBooleanHotkeyed   ENTITY_DATA_SYNC                    = new ConfigBooleanHotkeyed ("entityDataSync", false, "").apply(GENERIC_KEY);
 	    public static final ConfigBooleanHotkeyed   ENTITY_DATA_SYNC_BACKUP             = new ConfigBooleanHotkeyed ("entityDataSyncBackup", false, "").apply(GENERIC_KEY);
 	    public static final ConfigFloat             ENTITY_DATA_SYNC_CACHE_REFRESH      = new ConfigFloat       ("entityDataSyncCacheRefresh", 0.25f, 0.05f, 1.0f).apply(GENERIC_KEY);
-	    public static final ConfigFloat             ENTITY_DATA_SYNC_CACHE_TIMEOUT      = new ConfigFloat       ("entityDataSyncCacheTimeout", 2.75f, 1.0f, 25.0f).apply(GENERIC_KEY);
+	    public static final ConfigFloat             ENTITY_DATA_SYNC_CACHE_TIMEOUT      = new ConfigFloat       ("entityDataSyncCacheTimeout", 2.75f, 1.0f, 30.0f).apply(GENERIC_KEY);
         public static final ConfigDouble        	ENTITY_REACH_DISTANCE               = new ConfigDouble      ("entityReachDistance", 3.0, 1, 64).apply(GENERIC_KEY);
         public static final ConfigOptionList    	ENTITY_TYPE_ATTACK_RESTRICTION_WARN = new ConfigOptionList  ("entityTypeAttackRestrictionWarn", MessageOutputType.MESSAGE).apply(GENERIC_KEY);
         public static final ConfigInteger       	FAST_BLOCK_PLACEMENT_COUNT          = new ConfigInteger     ("fastBlockPlacementCount", 2, 1, 16).apply(GENERIC_KEY);
@@ -125,9 +134,9 @@ public class Configs implements IConfigHandler
         public static final ConfigBoolean       	SELECTIVE_BLOCKS_HIDE_PARTICLES     = new ConfigBoolean     ("selectiveBlocksHideParticles", true).apply(GENERIC_KEY);
         public static final ConfigBoolean       	SELECTIVE_BLOCKS_HIDE_ENTITIES      = new ConfigBoolean     ("selectiveBlocksHideEntities", false).apply(GENERIC_KEY);
         public static final ConfigBoolean       	SELECTIVE_BLOCKS_NO_HIT             = new ConfigBoolean     ("selectiveBlocksNoHit", true).apply(GENERIC_KEY);
-	    public static final ConfigInteger       	SERVER_NBT_REQUEST_RATE             = new ConfigInteger     ("serverNbtRequestRate", 2).apply(GENERIC_KEY);
+	    public static final ConfigInteger       	SERVER_NBT_REQUEST_RATE             = new ConfigInteger     ("serverNbtRequestRate", 2, 1, 8).apply(GENERIC_KEY);
 		public static final ConfigBoolean       	SHULKER_DISPLAY_BACKGROUND_COLOR    = new ConfigBoolean     ("shulkerDisplayBgColor", true).apply(GENERIC_KEY);
-        public static final ConfigBoolean       	SHULKER_DISPLAY_ENDER_CHEST         = new ConfigBoolean     ("shulkerDisplayEnderChest", false).apply(GENERIC_KEY);
+        public static final ConfigBooleanClient    	SHULKER_DISPLAY_ENDER_CHEST         = new ConfigBooleanClient("shulkerDisplayEnderChest", false, "", true).apply(GENERIC_KEY);
         public static final ConfigBoolean       	SHULKER_DISPLAY_REQUIRE_SHIFT       = new ConfigBoolean     ("shulkerDisplayRequireShift", true).apply(GENERIC_KEY);
         public static final ConfigBoolean       	SLOT_SYNC_WORKAROUND                = new ConfigBoolean     ("slotSyncWorkaround", true).apply(GENERIC_KEY);
         public static final ConfigBoolean       	SLOT_SYNC_WORKAROUND_ALWAYS         = new ConfigBoolean     ("slotSyncWorkaroundAlways", false).apply(GENERIC_KEY);
@@ -155,13 +164,17 @@ public class Configs implements IConfigHandler
         public static final ConfigBooleanHotkeyed	TOOL_SWAP_SILK_TOUCH_ORES			= new ConfigBooleanHotkeyed ("toolSwapSilkTouchOres", false, "").apply(GENERIC_KEY);
         public static final ConfigBooleanHotkeyed	TOOL_SWAP_SILK_TOUCH_OVERRIDE		= new ConfigBooleanHotkeyed ("toolSwapSilkTouchOverride", false, "").apply(GENERIC_KEY);
         public static final ConfigBooleanHotkeyed	TOOL_SWAP_PICKAXE_OVERRIDE		    = new ConfigBooleanHotkeyed ("toolSwapPickaxeOverride", false, "").apply(GENERIC_KEY);
+        public static final ConfigOptionList        TRANSLATION_LANGUAGE                = new ConfigOptionList  ("translationLanguage", new i18nConfig(LANG.orElseThrow())).apply(GENERIC_KEY);
+        public static final ConfigOptionList        TRANSLATION_MODE                    = new ConfigOptionList  ("translationMode", i18nMode.FOLLOW_VANILLA).apply(GENERIC_KEY);
         public static final ConfigOptionList    	UTILITY_HAND_SLOT                   = new ConfigOptionList  ("utilityHandSlot", HandSlot.MAIN_HAND).apply(GENERIC_KEY);
         public static final ConfigBooleanHotkeyed	WEAPON_SWAP_BETTER_ENCHANTS			= new ConfigBooleanHotkeyed ("weaponSwapBetterEnchants", true, "").apply(GENERIC_KEY);
         public static final ConfigBoolean			ZOOM_ADJUST_MOUSE_SENSITIVITY       = new ConfigBoolean     ("zoomAdjustMouseSensitivity", true).apply(GENERIC_KEY);
-        public static final ConfigDouble			ZOOM_FOV                            = new ConfigDouble      ("zoomFov", 30, 0.01, 359.99).apply(GENERIC_KEY);
+        public static final ConfigDouble			ZOOM_FOV                            = new ConfigDouble      ("zoomFov", 30, 0.01, 358.7).apply(GENERIC_KEY);
         public static final ConfigDouble			ZOOM_FOV_DIFFERENCE                 = new ConfigDouble      ("zoomFovDifference", 1, 0.01, 359.99).apply(GENERIC_KEY);
         public static final ConfigDouble            ZOOM_FOV_DIFFERENCE_CTRL            = new ConfigDouble      ("zoomFovDifferenceCtrl", 5, 0, 359.99).apply(GENERIC_KEY);
         public static final ConfigBoolean			ZOOM_RESET_FOV_ON_ACTIVATE          = new ConfigBoolean     ("zoomResetFovOnActivate", true).apply(GENERIC_KEY);
+        public static final ConfigDouble			ZOOM_MINIMUM_FOV                    = new ConfigDouble      ("zoomMinimumFov", 0, 0, 360).apply(GENERIC_KEY);
+        public static final ConfigDouble            ZOOM_MAXIMUM_FOV                    = new ConfigDouble      ("zoomMaximumFov", 360, 0, 360).apply(GENERIC_KEY);
 
         public static final ImmutableList<@NotNull IConfigBase> OPTIONS = ImmutableList.of(
                 ACCURATE_PLACEMENT_PROTOCOL_MODE,
@@ -287,11 +300,15 @@ public class Configs implements IConfigHandler
                 TOOL_SWAP_SILK_TOUCH_ORES,
                 TOOL_SWAP_SILK_TOUCH_OVERRIDE,
                 TOOL_SWAP_PICKAXE_OVERRIDE,
+                TRANSLATION_LANGUAGE,
+                TRANSLATION_MODE,
                 WEAPON_SWAP_BETTER_ENCHANTS,
                 ZOOM_FOV,
                 ZOOM_FOV_DIFFERENCE,
                 ZOOM_FOV_DIFFERENCE_CTRL,
-                ZOOM_RESET_FOV_ON_ACTIVATE
+                ZOOM_RESET_FOV_ON_ACTIVATE,
+                ZOOM_MINIMUM_FOV,
+                ZOOM_MAXIMUM_FOV
         );
 
         public static final ImmutableList<@NotNull IHotkey> HOTKEYS = ImmutableList.of(
@@ -403,10 +420,11 @@ public class Configs implements IConfigHandler
 
     public static class Disable
     {
+//        public static final ConfigBooleanHotkeyed       DISABLE_ALL_TERRAIN_FOG         = new ConfigBooleanModConflict("disableAllTerrainFog",              false, "", ModIds.sodium).apply(DISABLE_KEY);
         public static final ConfigBooleanHotkeyed       DISABLE_ARMOR_STAND_RENDERING   = new ConfigBooleanHotkeyed("disableArmorStandRendering",           false, "").apply(DISABLE_KEY);
         public static final ConfigBooleanHotkeyed       DISABLE_ATMOSPHERIC_FOG         = new ConfigBooleanHotkeyed("disableAtmosphericFog",                false, "").apply(DISABLE_KEY);
         public static final ConfigBooleanHotkeyed       DISABLE_AXE_STRIPPING           = new ConfigBooleanHotkeyed("disableAxeStripping",                  false, "").apply(DISABLE_KEY);
-        public static final ConfigBooleanHotkeyed       DISABLE_BAT_SPAWNING            = new ConfigBooleanClient  ("disableBatSpawning",                   false, "").apply(DISABLE_KEY);
+        public static final ConfigBooleanHotkeyed       DISABLE_BAT_SPAWNING            = new ConfigBooleanClient  ("disableBatSpawning",                   false, "", false).apply(DISABLE_KEY);
         public static final ConfigBooleanHotkeyed       DISABLE_BEACON_BEAM_RENDERING   = new ConfigBooleanHotkeyed("disableBeaconBeamRendering",           false, "").apply(DISABLE_KEY);
         public static final ConfigBooleanHotkeyed       DISABLE_BLOCK_BREAK_PARTICLES   = new ConfigBooleanHotkeyed("disableBlockBreakingParticles",        false, "").apply(DISABLE_KEY);
         public static final ConfigBooleanHotkeyed       DISABLE_BLOCK_BREAK_COOLDOWN    = new ConfigBooleanHotkeyed("disableBlockBreakCooldown",            false, "").apply(DISABLE_KEY);
@@ -422,7 +440,7 @@ public class Configs implements IConfigHandler
         public static final ConfigBooleanHotkeyed       DISABLE_DEAD_MOB_RENDERING      = new ConfigBooleanHotkeyed("disableDeadMobRendering",              false, "").apply(DISABLE_KEY);
         public static final ConfigBooleanHotkeyed       DISABLE_DEAD_MOB_TARGETING      = new ConfigBooleanHotkeyed("disableDeadMobTargeting",              false, "").apply(DISABLE_KEY);
         public static final ConfigBooleanHotkeyed       DISABLE_ENTITY_RENDERING        = new ConfigBooleanHotkeyed("disableEntityRendering",               false, "").apply(DISABLE_KEY);
-        public static final ConfigBooleanHotkeyed       DISABLE_ENTITY_TICKING          = new ConfigBooleanClient  ("disableEntityTicking",                 false, "").apply(DISABLE_KEY);
+        public static final ConfigBooleanHotkeyed       DISABLE_ENTITY_TICKING          = new ConfigBooleanClient  ("disableEntityTicking",                 false, "", false).apply(DISABLE_KEY);
         public static final ConfigBooleanHotkeyed       DISABLE_FALLING_BLOCK_RENDER    = new ConfigBooleanHotkeyed("disableFallingBlockEntityRendering",   false, "").apply(DISABLE_KEY);
         public static final ConfigBooleanHotkeyed       DISABLE_FIRE_OVERLAY            = new ConfigBooleanHotkeyed("disableFireOverlay",                   false, "").apply(DISABLE_KEY);
         public static final ConfigBooleanHotkeyed       DISABLE_FP_EFFECT_PARTICLES     = new ConfigBooleanHotkeyed("disableFirstPersonEffectParticles",    false, "").apply(DISABLE_KEY);
@@ -431,9 +449,9 @@ public class Configs implements IConfigHandler
         public static final ConfigBooleanHotkeyed       DISABLE_ITEM_SWITCH_COOLDOWN    = new ConfigBooleanHotkeyed("disableItemSwitchRenderCooldown",      false, "").apply(DISABLE_KEY);
         public static final ConfigBooleanHotkeyed       DISABLE_MOB_SPAWNER_MOB_RENDER  = new ConfigBooleanHotkeyed("disableMobSpawnerMobRendering",        false, "").apply(DISABLE_KEY);
         public static final ConfigBooleanHotkeyed       DISABLE_NAUSEA_EFFECT           = new ConfigBooleanHotkeyed("disableNauseaEffect",                  false, "").apply(DISABLE_KEY);
-        public static final ConfigBooleanHotkeyed       DISABLE_NETHER_FOG              = new ConfigBooleanHotkeyed("disableNetherFog",                     false, "").apply(DISABLE_KEY);
+//        public static final ConfigBooleanHotkeyed       DISABLE_NETHER_FOG              = new ConfigBooleanHotkeyed("disableNetherFog",                     false, "").apply(DISABLE_KEY);
         public static final ConfigBooleanHotkeyed       DISABLE_NETHER_PORTAL_SOUND     = new ConfigBooleanHotkeyed("disableNetherPortalSound",             false, "").apply(DISABLE_KEY);
-        public static final ConfigBooleanHotkeyed       DISABLE_OBSERVER                = new ConfigBooleanClient  ("disableObserver",                      false, "").apply(DISABLE_KEY);
+        public static final ConfigBooleanHotkeyed       DISABLE_OBSERVER                = new ConfigBooleanClient  ("disableObserver",                      false, "", false).apply(DISABLE_KEY);
         public static final ConfigBooleanHotkeyed       DISABLE_OFFHAND_RENDERING       = new ConfigBooleanHotkeyed("disableOffhandRendering",              false, "").apply(DISABLE_KEY);
         public static final ConfigBooleanHotkeyed       DISABLE_PARTICLES               = new ConfigBooleanHotkeyed("disableParticles",                     false, "").apply(DISABLE_KEY);
         public static final ConfigBooleanHotkeyed       DISABLE_PORTAL_GUI_CLOSING      = new ConfigBooleanHotkeyed("disablePortalGuiClosing",              false, "").apply(DISABLE_KEY);
@@ -449,12 +467,13 @@ public class Configs implements IConfigHandler
         public static final ConfigBooleanHotkeyed       DISABLE_STATUS_EFFECT_HUD       = new ConfigBooleanHotkeyed("disableStatusEffectHud",               false, "").apply(DISABLE_KEY);
         public static final ConfigBooleanHotkeyed       DISABLE_TICKRATE_PLAYER_SLOWDOWN= new ConfigBooleanHotkeyed("disableTickRatePlayerSlowdown",        false, "").apply(DISABLE_KEY);
         public static final ConfigBooleanHotkeyed       DISABLE_TILE_ENTITY_RENDERING   = new ConfigBooleanHotkeyed("disableTileEntityRendering",           false, "").apply(DISABLE_KEY);
-        public static final ConfigBooleanHotkeyed       DISABLE_TILE_ENTITY_TICKING     = new ConfigBooleanClient  ("disableTileEntityTicking",             false, "").apply(DISABLE_KEY);
-        public static final ConfigBooleanHotkeyed       DISABLE_VILLAGER_TRADE_LOCKING  = new ConfigBooleanClient  ("disableVillagerTradeLocking",          false, "").apply(DISABLE_KEY);
+        public static final ConfigBooleanHotkeyed       DISABLE_TILE_ENTITY_TICKING     = new ConfigBooleanClient  ("disableTileEntityTicking",             false, "", false).apply(DISABLE_KEY);
+        public static final ConfigBooleanHotkeyed       DISABLE_VILLAGER_TRADE_LOCKING  = new ConfigBooleanClient  ("disableVillagerTradeLocking",          false, "", false).apply(DISABLE_KEY);
         public static final ConfigBooleanHotkeyed       DISABLE_WALL_UNSPRINT           = new ConfigBooleanHotkeyed("disableWallUnsprint",                  false, "").apply(DISABLE_KEY);
-        public static final ConfigBooleanHotkeyed       DISABLE_WORLD_VIEW_BOB          = new ConfigBooleanHotkeyed("disableWorldViewBob",                  false, "").apply(DISABLE_KEY);
+        public static final ConfigBooleanHotkeyed       DISABLE_WORLD_VIEW_BOB          = new ConfigBooleanModConflict("disableWorldViewBob",               false, "", ModIds.iris).apply(DISABLE_KEY);
 
         public static final ImmutableList<@NotNull IHotkeyTogglable> OPTIONS = ImmutableList.of(
+//                DISABLE_ALL_TERRAIN_FOG,
                 DISABLE_ARMOR_STAND_RENDERING,
                 DISABLE_ATMOSPHERIC_FOG,
                 DISABLE_AXE_STRIPPING,
@@ -483,7 +502,7 @@ public class Configs implements IConfigHandler
                 DISABLE_ITEM_SWITCH_COOLDOWN,
                 DISABLE_MOB_SPAWNER_MOB_RENDER,
                 DISABLE_NAUSEA_EFFECT,
-                DISABLE_NETHER_FOG,
+//                DISABLE_NETHER_FOG,
                 DISABLE_NETHER_PORTAL_SOUND,
                 DISABLE_OBSERVER,
                 DISABLE_OFFHAND_RENDERING,
@@ -568,6 +587,8 @@ public class Configs implements IConfigHandler
         {
             Tweakeroo.LOGGER.error("loadFromFile(): Failed to load config file '{}'.", configFile.toAbsolutePath());
         }
+
+        checkBaseLanguage();
 
         // TODO 1.19.3+
         //CreativeExtraItems.setCreativeExtraItems(Lists.CREATIVE_EXTRA_ITEMS.getStrings());
@@ -665,5 +686,86 @@ public class Configs implements IConfigHandler
     public void save()
     {
         saveToFile();
+    }
+
+    @Override
+    public void onLanguageChanged(String newLang)
+    {
+        checkBaseLanguage();
+    }
+    // Attempts to load the same language file as MaLiLib; where available -- on occasion
+
+    public static void checkBaseLanguage()
+    {
+        i18nMode mode = (i18nMode) Generic.TRANSLATION_MODE.getOptionListValue();
+
+        if (mode == i18nMode.FOLLOW_MALILIB)
+        {
+            LANG.ifPresent(
+                    i18nManager ->
+                    {
+                        String baseKey = Registry.TRANSLATION_OVERRIDE_MANAGER.getBaseLanguageCode();
+
+                        // Try setting language if it doesn't match
+                        if (!i18nManager.getLang().getLangCode().equalsIgnoreCase(baseKey))
+                        {
+                            List<i18nOption> list = i18nManager.getLanguageOptions();
+                            boolean found = false;
+
+                            for (i18nOption entry : list)
+                            {
+                                if (entry.getKey().equalsIgnoreCase(baseKey))
+                                {
+                                    i18nManager.setLang(baseKey);
+                                    i18nConfig newConfig = new i18nConfig(i18nManager).fromString(baseKey);
+                                    Generic.TRANSLATION_LANGUAGE.setOptionListValue(newConfig);
+                                    found = true;
+                                    break;
+                                }
+                            }
+
+                            if (!found)
+                            {
+                                i18nManager.resetLangToDefault();
+                                Generic.TRANSLATION_LANGUAGE.resetToDefault();
+                            }
+                        }
+                    }
+            );
+        }
+        else if (mode == i18nMode.FOLLOW_VANILLA)
+        {
+            LANG.ifPresent(
+                    i18nManager ->
+                    {
+                        String vanCode = Registry.TRANSLATION_OVERRIDE_MANAGER.getVanillaLanguageCode();
+
+                        // Try setting language if it doesn't match
+                        if (!i18nManager.getLang().getLangCode().equalsIgnoreCase(vanCode))
+                        {
+                            List<i18nOption> list = i18nManager.getLanguageOptions();
+                            boolean found = false;
+
+                            for (i18nOption entry : list)
+                            {
+                                if (entry.getKey().equalsIgnoreCase(vanCode))
+                                {
+                                    i18nManager.setLang(vanCode);
+                                    i18nConfig newConfig = new i18nConfig(i18nManager).fromString(vanCode);
+                                    Generic.TRANSLATION_LANGUAGE.setOptionListValue(newConfig);
+                                    found = true;
+                                    break;
+                                }
+                            }
+
+                            if (!found)
+                            {
+                                i18nManager.resetLangToDefault();
+                                Generic.TRANSLATION_LANGUAGE.resetToDefault();
+                            }
+                        }
+                    }
+            );
+        }
     }
 }
